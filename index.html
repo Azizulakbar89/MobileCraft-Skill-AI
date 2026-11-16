@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Aura Mobile</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
+    
+    * {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Tactile Press Physics */
+    .tactile {
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.1s ease;
+    }
+    .tactile:active {
+      transform: scale(0.96);
+      opacity: 0.88;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Bottom Sheet Animation */
+    .sheet-backdrop {
+      transition: opacity 0.25s ease;
+    }
+    .sheet-content {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="bg-slate-900 sm:bg-slate-950 min-h-screen flex items-center justify-center m-0 p-0 sm:p-4 text-slate-900">
+
+  <!-- Mobile Device Shell -->
+  <div class="w-full max-w-[412px] h-[100dvh] sm:h-[844px] bg-[#F8F9FA] sm:rounded-[44px] sm:shadow-2xl sm:border-[10px] sm:border-slate-800 flex flex-col relative overflow-hidden">
+    
+    <!-- Status Bar (iOS / Android Native Look) -->
+    <header class="pt-3 px-6 pb-2 flex justify-between items-center text-xs font-semibold text-slate-800 bg-[#F8F9FA] z-30 shrink-0">
+      <span id="current-time">09:41</span>
+      <div class="w-24 h-5 bg-black rounded-full flex items-center justify-center">
+        <div class="w-2.5 h-2.5 rounded-full bg-slate-900 mr-2"></div>
+        <div class="w-2 h-2 rounded-full bg-emerald-500/80 animate-pulse"></div>
+      </div>
+      <div class="flex items-center gap-1.5 text-[11px]">
+        <span>5G</span>
+        <div class="w-5 h-2.5 border border-slate-700 rounded-sm p-0.5 flex items-center">
+          <div class="w-full h-full bg-slate-800 rounded-2xs"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Screen Content Container -->
+    <main class="flex-1 overflow-y-auto hide-scrollbar relative pb-24" id="app-viewport">
+      
+      <!-- SCREEN 1: FINTECH WALLET -->
+      <section id="view-wallet" class="p-5 space-y-4">
+        <!-- User Top Bar -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-slate-950 text-white font-bold flex items-center justify-center text-xs ring-2 ring-slate-200">
+              AH
+            </div>
+            <div>
+              <div class="text-[11px] text-slate-500 font-medium">Selamat datang,</div>
+              <div class="text-sm font-bold text-slate-950">Azizul Hakim</div>
+            </div>
+          </div>
+          <button onclick="toggleBalanceVisibility()" class="tactile w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-xs text-slate-700">
+            <svg id="eye-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+          </button>
+        </div>
+
+        <!-- Main Balance Card -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs">
+          <div class="flex items-center justify-between text-xs text-slate-500">
+            <span>Saldo Aktif Tabungan</span>
+            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold text-[11px]">+14.8% bln ini</span>
+          </div>
+          <div class="text-3xl font-extrabold text-slate-950 mt-2 tracking-tight tabular-nums" id="balance-display">
+            Rp 148.520.000
+          </div>
+          <div class="text-xs text-slate-400 mt-1 font-mono">BCA Prioritas • 9920 4421</div>
+
+          <!-- Quick Action Buttons -->
+          <div class="grid grid-cols-4 gap-2 mt-5 pt-4 border-t border-slate-100">
+            <button onclick="openActionModal('Kirim Saldo', 'Transfer instan ke 140+ bank dan e-wallet')" class="tactile flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-slate-50">
+              <div class="w-11 h-11 rounded-2xl bg-slate-950 text-white flex items-center justify-center shadow-xs">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+              </div>
+              <span class="text-[11px] font-semibold text-slate-700">Kirim</span>
+            </button>
+            <button onclick="openActionModal('Top Up Saldo', 'Isi saldo via Virtual Account, Gerai, atau Kartu Debit')" class="tactile flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-slate-50">
+              <div class="w-11 h-11 rounded-2xl bg-slate-100 text-slate-800 flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+              </div>
+              <span class="text-[11px] font-semibold text-slate-700">Top Up</span>
+            </button>
+            <button onclick="openActionModal('Pindai QRIS', 'Arahkan kamera ke QRIS merchant untuk membayar')" class="tactile flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-slate-50">
+              <div class="w-11 h-11 rounded-2xl bg-slate-100 text-slate-800 flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+              </div>
+              <span class="text-[11px] font-semibold text-slate-700">QRIS</span>
+            </button>
+            <button onclick="openActionModal('Analitik Keuangan', 'Ringkasan rasio tabungan dan batas pengeluaran')" class="tactile flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-slate-50">
+              <div class="w-11 h-11 rounded-2xl bg-slate-100 text-slate-800 flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+              </div>
+              <span class="text-[11px] font-semibold text-slate-700">Analitik</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bento Spending Chart -->
+        <div class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-xs">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-slate-900">Pengeluaran Bulan Ini</span>
+            <span class="text-[11px] text-slate-500 font-medium">Batas: Rp 20jt</span>
+          </div>
+          <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
+            <div class="bg-slate-900 h-full w-[52%]"></div>
+            <div class="bg-sky-700 h-full w-[28%]"></div>
+            <div class="bg-amber-600 h-full w-[12%]"></div>
+          </div>
+          <div class="flex justify-between items-center text-[10px] text-slate-600 mt-2.5 font-medium">
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-900 inline-block"></span> Belanja (52%)</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-700 inline-block"></span> Tagihan (28%)</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-600 inline-block"></span> Investasi (12%)</span>
+          </div>
+        </div>
+
+        <!-- Grouped Recent Transactions -->
+        <div>
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs font-bold text-slate-900">Transaksi Terakhir</span>
+            <span class="text-[11px] text-slate-400">November 2026</span>
+          </div>
+          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+            <!-- Row 1 -->
+            <div class="p-3.5 flex items-center justify-between border-b border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold text-xs">
+                  ⚡
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Tagihan Listrik PLN</div>
+                  <div class="text-[10px] text-slate-400">Hari ini, 08:30 • Utilitas</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs font-bold text-slate-900 tabular-nums">-Rp 450.000</div>
+                <div class="text-[10px] text-emerald-800 font-semibold">Berhasil</div>
+              </div>
+            </div>
+            <!-- Row 2 -->
+            <div class="p-3.5 flex items-center justify-between border-b border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-sky-50 text-sky-800 flex items-center justify-center font-bold text-xs">
+                  💼
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Transfer Masuk (PT Inovasi)</div>
+                  <div class="text-[10px] text-slate-400">Kemarin, 14:15 • Honor Project</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs font-bold text-emerald-800 tabular-nums">+Rp 14.500.000</div>
+                <div class="text-[10px] text-slate-400">Selesai</div>
+              </div>
+            </div>
+            <!-- Row 3 -->
+            <div class="p-3.5 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-bold text-xs">
+                  ☕
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Kopi Kenangan Senopati</div>
+                  <div class="text-[10px] text-slate-400">14 Nov, 16:40 • F&B</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs font-bold text-slate-900 tabular-nums">-Rp 38.000</div>
+                <div class="text-[10px] text-emerald-800 font-semibold">Berhasil</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: HABIT / WELLNESS TRACKER -->
+      <section id="view-habits" class="p-5 space-y-4 hidden">
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Senin, 16 November</div>
+          <h2 class="text-xl font-bold text-slate-900 mt-0.5">Target Kebugaran</h2>
+        </div>
+
+        <!-- Bento Ring Card -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-white rounded-3xl p-4 border border-slate-100 shadow-xs flex flex-col items-center justify-center text-center">
+            <div class="relative w-24 h-24 flex items-center justify-center">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path id="progress-circle" class="text-emerald-500 transition-all duration-500 ease-out" stroke-dasharray="75, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              </svg>
+              <div class="absolute text-center">
+                <span id="progress-text" class="text-lg font-extrabold text-slate-900 tabular-nums">75%</span>
+              </div>
+            </div>
+            <div class="text-xs font-bold text-slate-900 mt-2" id="habit-count-text">3 dari 4 Selesai</div>
+            <div class="text-[10px] text-slate-400">Hari ke-14 beruntun</div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <div class="bg-amber-50/80 border border-amber-200/60 rounded-3xl p-3.5 flex items-center gap-3">
+              <div class="text-2xl">🔥</div>
+              <div>
+                <div class="text-[10px] font-medium text-amber-800">Streak Terbaik</div>
+                <div class="text-sm font-bold text-slate-900 tabular-nums">14 Hari</div>
+              </div>
+            </div>
+            <div class="bg-sky-50/80 border border-sky-200/60 rounded-3xl p-3.5 flex items-center gap-3">
+              <div class="text-2xl">💧</div>
+              <div>
+                <div class="text-[10px] font-medium text-sky-800">Air Minum</div>
+                <div class="text-sm font-bold text-slate-900 tabular-nums">2.1L / 2.5L</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Habit Check-in List -->
+        <div class="space-y-2.5 pt-1">
+          <div class="text-xs font-bold text-slate-900 px-1">Checklist Hari Ini</div>
+          
+          <div class="habit-item bg-white rounded-2xl p-3.5 border border-slate-100 flex items-center justify-between shadow-xs" data-checked="true">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center text-sm">🧘</div>
+              <div>
+                <div class="habit-title text-xs font-bold text-slate-800 line-through opacity-60">Meditasi Pagi 15 Menit</div>
+                <div class="text-[10px] text-slate-400">Selesai 07:15</div>
+              </div>
+            </div>
+            <button onclick="toggleHabit(this)" class="tactile w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">✓</button>
+          </div>
+
+          <div class="habit-item bg-white rounded-2xl p-3.5 border border-slate-100 flex items-center justify-between shadow-xs" data-checked="true">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm">🏃</div>
+              <div>
+                <div class="habit-title text-xs font-bold text-slate-800 line-through opacity-60">Lari Pagi 3 KM</div>
+                <div class="text-[10px] text-slate-400">Selesai 06:45</div>
+              </div>
+            </div>
+            <button onclick="toggleHabit(this)" class="tactile w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">✓</button>
+          </div>
+
+          <div class="habit-item bg-white rounded-2xl p-3.5 border border-slate-200 flex items-center justify-between shadow-xs" data-checked="true">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-sm">🥗</div>
+              <div>
+                <div class="habit-title text-xs font-bold text-slate-800 line-through opacity-60">Makan Siang Sehat</div>
+                <div class="text-[10px] text-slate-400">Selesai 12:30</div>
+              </div>
+            </div>
+            <button onclick="toggleHabit(this)" class="tactile w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">✓</button>
+          </div>
+
+          <div class="habit-item bg-white rounded-2xl p-3.5 border border-slate-200 flex items-center justify-between shadow-xs" data-checked="false">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-sm">📖</div>
+              <div>
+                <div class="habit-title text-xs font-bold text-slate-900">Membaca Buku 20 Halaman</div>
+                <div class="text-[10px] text-amber-700 font-medium">Jadwal: Malam Hari</div>
+              </div>
+            </div>
+            <button onclick="toggleHabit(this)" class="tactile w-7 h-7 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold">✓</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: E-COMMERCE PRODUCT DETAIL -->
+      <section id="view-shop" class="space-y-4 hidden pb-16">
+        <!-- Top App Bar -->
+        <div class="p-4 flex items-center justify-between">
+          <button class="tactile w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-xs">
+            <svg class="w-4 h-4 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+          </button>
+          <div class="text-xs font-bold text-slate-900">Detail Produk</div>
+          <button onclick="toggleFavorite(this)" class="tactile w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-xs text-slate-700">
+            <svg class="w-4 h-4 heart-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+          </button>
+        </div>
+
+        <!-- Edge-to-Edge Image Carousel -->
+        <div class="px-4">
+          <div id="product-card-preview" class="w-full h-56 bg-slate-100 rounded-3xl overflow-hidden relative flex items-center justify-center border border-slate-200 transition-colors duration-300">
+            <span id="product-emoji" class="text-7xl select-none">🎧</span>
+            <span class="absolute bottom-3 right-3 px-2 py-0.5 bg-black/60 text-white text-[10px] rounded-full font-mono">1/3</span>
+          </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Acoustic Pro Studio</span>
+            <div class="flex items-center gap-1 text-[11px] font-semibold text-slate-900">
+              <span class="text-amber-500">★</span> 4.9 <span class="text-slate-400 font-normal">(184 ulasan)</span>
+            </div>
+          </div>
+          <h2 class="text-lg font-bold text-slate-900">Spatial Studio ANC Headphones Gen-3</h2>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            Headphone nirkabel kelas studio dengan peredam bising aktif hibrida, baterai 48 jam, dan earcup memory foam bernapas.
+          </p>
+
+          <!-- Color Variant Selector -->
+          <div class="pt-2">
+            <div class="text-[11px] font-bold text-slate-800 mb-2">Pilihan Warna: <span id="color-label" class="text-slate-500 font-normal">Matte Obsidian</span></div>
+            <div class="flex gap-2">
+              <button onclick="selectColor('Matte Obsidian', '#1E293B', '🎧')" class="color-btn tactile px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-950 text-white shadow-xs">
+                Obsidian
+              </button>
+              <button onclick="selectColor('Silver Fog', '#E2E8F0', '🎙️')" class="color-btn tactile px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">
+                Silver Fog
+              </button>
+              <button onclick="selectColor('Forest Sage', '#D1FAE5', '📻')" class="color-btn tactile px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">
+                Forest Sage
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky Bottom Add to Cart Bar -->
+        <div class="fixed bottom-16 sm:bottom-0 left-0 right-0 max-w-[412px] mx-auto p-4 bg-white/95 backdrop-blur-md border-t border-slate-200/80 flex items-center justify-between gap-4 z-20">
+          <div>
+            <div class="text-[10px] text-slate-400 font-medium">Harga Khusus</div>
+            <div class="text-lg font-extrabold text-slate-950 tabular-nums">Rp 3.499.000</div>
+          </div>
+          <button onclick="addToCartAnimation()" class="tactile flex-1 h-12 bg-slate-950 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            <span id="cart-btn-text">Tambah ke Tas</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: BOOKING / TRAVEL APP -->
+      <section id="view-travel" class="p-4 space-y-3 hidden">
+        <!-- Floating Search Pill -->
+        <div onclick="openActionModal('Atur Pencarian', 'Pilih destinasi, tanggal menginap, dan jumlah kamar')" class="tactile bg-white rounded-full p-2 pl-4 border border-slate-200 shadow-xs flex items-center justify-between cursor-pointer">
+          <div class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <div>
+              <div class="text-xs font-bold text-slate-900">Ubud, Bali</div>
+              <div class="text-[10px] text-slate-400">18-22 Des • 2 Tamu • 1 Kamar</div>
+            </div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-slate-950 text-white flex items-center justify-center">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+          </div>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar py-1">
+          <button class="tactile px-3 py-1.5 rounded-full bg-slate-950 text-white text-[11px] font-semibold whitespace-nowrap">
+            Semua Villa
+          </button>
+          <button class="tactile px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-[11px] font-medium whitespace-nowrap">
+            Private Pool
+          </button>
+          <button class="tactile px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-[11px] font-medium whitespace-nowrap">
+            Tepi Tebing
+          </button>
+          <button class="tactile px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-[11px] font-medium whitespace-nowrap">
+            Pemandangan Hutan
+          </button>
+        </div>
+
+        <!-- Accommodation Cards -->
+        <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-xs">
+          <div class="h-40 bg-slate-200 relative flex items-center justify-center">
+            <span class="text-5xl">🌴</span>
+            <span class="absolute top-3 right-3 px-2 py-0.5 bg-white/90 rounded-full text-[10px] font-bold text-slate-900 backdrop-blur-xs">
+              ★ 4.96
+            </span>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xs font-bold text-slate-900">Ubud Bamboo Luxury Sanctuary</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">2.4 km dari Pusat Kota • Kolam Renang Pribadi</p>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs text-slate-500">Mulai dari</span>
+              <div class="text-right">
+                <span class="text-sm font-bold text-slate-900 tabular-nums">Rp 1.850.000</span>
+                <span class="text-[10px] text-slate-400">/malam</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-xs">
+          <div class="h-40 bg-slate-200 relative flex items-center justify-center">
+            <span class="text-5xl">🌊</span>
+            <span class="absolute top-3 right-3 px-2 py-0.5 bg-white/90 rounded-full text-[10px] font-bold text-slate-900 backdrop-blur-xs">
+              ★ 4.89
+            </span>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xs font-bold text-slate-900">Canggu Sunset Cliff Resort</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Echo Beach • 2 Kamar Suite King</p>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs text-slate-500">Mulai dari</span>
+              <div class="text-right">
+                <span class="text-sm font-bold text-slate-900 tabular-nums">Rp 2.450.000</span>
+                <span class="text-[10px] text-slate-400">/malam</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: CALM AI CHAT & NOTES -->
+      <section id="view-assistant" class="flex flex-col h-full justify-between hidden">
+        <div class="p-4 border-b border-slate-200 bg-white/80 backdrop-blur-md flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-slate-950 text-white flex items-center justify-center font-bold text-xs">
+              AI
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-900">Asisten Aura</div>
+              <div class="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Online
+              </div>
+            </div>
+          </div>
+          <button onclick="clearChat()" class="tactile text-xs text-slate-400 hover:text-slate-600 font-medium">Hapus</button>
+        </div>
+
+        <div id="chat-messages" class="p-4 space-y-3 overflow-y-auto flex-1">
+          <div class="flex items-start gap-2.5 max-w-[90%]">
+            <div class="bg-white p-3.5 rounded-3xl rounded-tl-sm border border-slate-200/80 shadow-2xs text-xs text-slate-800 leading-relaxed">
+              Halo Azizul! Dompet aktif Anda memiliki saldo <strong>Rp 148.520.000</strong>. Anda juga memiliki 1 habit membaca buku yang belum dicentang hari ini. Ada yang ingin saya bantu?
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Input Bar -->
+        <div class="p-3 bg-white border-t border-slate-200">
+          <form onsubmit="handleChatSubmit(event)" class="bg-slate-100 rounded-2xl p-1.5 pl-3 flex items-center gap-2 border border-slate-200/60">
+            <input id="chat-input" type="text" placeholder="Ketik pesan..." class="bg-transparent flex-1 text-xs text-slate-800 outline-none placeholder-slate-400" />
+            <button type="submit" class="tactile w-8 h-8 rounded-xl bg-slate-950 text-white flex items-center justify-center">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+            </button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Sheet Modal (Interactive Drawer) -->
+    <div id="action-modal" class="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end">
+      <div id="modal-backdrop" onclick="closeActionModal()" class="sheet-backdrop absolute inset-0 bg-black/40 opacity-0 pointer-events-none"></div>
+      <div id="modal-panel" class="sheet-content relative bg-white rounded-t-[32px] p-6 shadow-2xl translate-y-full pointer-events-auto">
+        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-4"></div>
+        <h3 id="modal-title" class="text-base font-bold text-slate-900 text-center">Aksi Cepat</h3>
+        <p id="modal-desc" class="text-xs text-slate-500 text-center mt-1">Keterangan fitur</p>
+        <div class="mt-6 space-y-3">
+          <button onclick="closeActionModal()" class="tactile w-full h-12 bg-slate-950 text-white rounded-2xl font-bold text-xs flex items-center justify-center">
+            Lanjutkan Aksi
+          </button>
+          <button onclick="closeActionModal()" class="tactile w-full h-12 bg-slate-100 text-slate-700 rounded-2xl font-semibold text-xs flex items-center justify-center">
+            Batal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Native Mobile Bottom Tab Bar -->
+    <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-2 flex items-center justify-around z-30 select-none">
+      <button onclick="navigateTab('wallet')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-950" data-tab="wallet">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+        <span class="text-[10px] font-bold">Dompet</span>
+      </button>
+
+      <button onclick="navigateTab('habits')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700" data-tab="habits">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-[10px] font-medium">Habit</span>
+      </button>
+
+      <button onclick="navigateTab('shop')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 relative" data-tab="shop">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+        <span class="text-[10px] font-medium">Belanja</span>
+        <span id="cart-badge" class="hidden absolute top-0 right-2 w-2 h-2 rounded-full bg-emerald-500"></span>
+      </button>
+
+      <button onclick="navigateTab('travel')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700" data-tab="travel">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"></path></svg>
+        <span class="text-[10px] font-medium">Wisata</span>
+      </button>
+
+      <button onclick="navigateTab('assistant')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700" data-tab="assistant">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        <span class="text-[10px] font-medium">Asisten</span>
+      </button>
+    </nav>
+
+    <!-- Bottom Indicator Line -->
+    <div class="absolute bottom-1 left-0 right-0 flex justify-center pointer-events-none select-none z-40">
+      <div class="w-32 h-1 bg-slate-300 rounded-full"></div>
+    </div>
+  </div>
+
+  <script>
+    // Tab Navigation
+    function navigateTab(tabKey) {
+      const views = ['wallet', 'habits', 'shop', 'travel', 'assistant'];
+      views.forEach(v => {
+        const el = document.getElementById('view-' + v);
+        if (el) el.classList.add('hidden');
+      });
+
+      const targetView = document.getElementById('view-' + tabKey);
+      if (targetView) targetView.classList.remove('hidden');
+
+      // Update Nav Buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabKey) {
+          btn.className = 'nav-btn tactile flex flex-col items-center gap-1 text-slate-950 font-bold';
+        } else {
+          btn.className = 'nav-btn tactile flex flex-col items-center gap-1 text-slate-400 hover:text-slate-700 font-medium';
+        }
+      });
+
+      // Scroll to top
+      document.getElementById('app-viewport').scrollTop = 0;
+    }
+
+    // Balance visibility toggle
+    let isBalanceHidden = false;
+    function toggleBalanceVisibility() {
+      const display = document.getElementById('balance-display');
+      isBalanceHidden = !isBalanceHidden;
+      if (isBalanceHidden) {
+        display.innerText = '••••••••••••';
+      } else {
+        display.innerText = 'Rp 148.520.000';
+      }
+    }
+
+    // Modal Sheet Trigger
+    function openActionModal(title, desc) {
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-desc').innerText = desc;
+      const modal = document.getElementById('action-modal');
+      const backdrop = document.getElementById('modal-backdrop');
+      const panel = document.getElementById('modal-panel');
+
+      modal.classList.remove('pointer-events-none');
+      backdrop.classList.remove('pointer-events-none', 'opacity-0');
+      backdrop.classList.add('opacity-100');
+      panel.classList.remove('translate-y-full');
+      panel.classList.add('translate-y-0');
+    }
+
+    function closeActionModal() {
+      const modal = document.getElementById('action-modal');
+      const backdrop = document.getElementById('modal-backdrop');
+      const panel = document.getElementById('modal-panel');
+
+      backdrop.classList.remove('opacity-100');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      panel.classList.remove('translate-y-0');
+      panel.classList.add('translate-y-full');
+      setTimeout(() => {
+        modal.classList.add('pointer-events-none');
+      }, 300);
+    }
+
+    // Habit toggle & live progress
+    function toggleHabit(btn) {
+      const item = btn.closest('.habit-item');
+      const title = item.querySelector('.habit-title');
+      const isChecked = item.getAttribute('data-checked') === 'true';
+
+      if (isChecked) {
+        item.setAttribute('data-checked', 'false');
+        btn.className = 'tactile w-7 h-7 rounded-full border-2 border-slate-300 text-transparent flex items-center justify-center text-xs font-bold';
+        title.classList.remove('line-through', 'opacity-60');
+      } else {
+        item.setAttribute('data-checked', 'true');
+        btn.className = 'tactile w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold';
+        title.classList.add('line-through', 'opacity-60');
+      }
+
+      // Recompute progress
+      const all = document.querySelectorAll('.habit-item');
+      const checked = document.querySelectorAll('.habit-item[data-checked="true"]');
+      const pct = Math.round((checked.length / all.length) * 100);
+
+      document.getElementById('progress-text').innerText = pct + '%';
+      document.getElementById('habit-count-text').innerText = checked.length + ' dari ' + all.length + ' Selesai';
+      document.getElementById('progress-circle').setAttribute('stroke-dasharray', `${pct}, 100`);
+    }
+
+    // Color variant selector
+    function selectColor(name, bg, emoji) {
+      document.getElementById('color-label').innerText = name;
+      document.getElementById('product-card-preview').style.backgroundColor = bg;
+      document.getElementById('product-emoji').innerText = emoji;
+
+      document.querySelectorAll('.color-btn').forEach(btn => {
+        if (btn.innerText.includes(name.split(' ')[0])) {
+          btn.className = 'color-btn tactile px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-950 text-white shadow-xs';
+        } else {
+          btn.className = 'color-btn tactile px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200';
+        }
+      });
+    }
+
+    // Add to cart animation
+    function addToCartAnimation() {
+      const btnText = document.getElementById('cart-btn-text');
+      const badge = document.getElementById('cart-badge');
+      btnText.innerText = '✓ Berhasil Ditambahkan!';
+      badge.classList.remove('hidden');
+
+      setTimeout(() => {
+        btnText.innerText = 'Tambah ke Tas';
+      }, 1800);
+    }
+
+    // Favorite heart toggle
+    function toggleFavorite(btn) {
+      const svg = btn.querySelector('.heart-svg');
+      if (svg.getAttribute('fill') === 'currentColor') {
+        svg.setAttribute('fill', 'none');
+        btn.classList.remove('text-rose-500');
+        btn.classList.add('text-slate-700');
+      } else {
+        svg.setAttribute('fill', 'currentColor');
+        btn.classList.remove('text-slate-700');
+        btn.classList.add('text-rose-500');
+      }
+    }
+
+    // Calm Chat Submit
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('chat-messages');
+
+      // User Bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex items-start justify-end';
+      userBubble.innerHTML = `<div class="bg-slate-950 p-3.5 rounded-3xl rounded-tr-sm text-xs text-white leading-relaxed max-w-[85%] shadow-xs">${text}</div>`;
+      container.appendChild(userBubble);
+      input.value = '';
+
+      // AI Response after 400ms
+      setTimeout(() => {
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'flex items-start gap-2.5 max-w-[90%]';
+        aiBubble.innerHTML = `<div class="bg-white p-3.5 rounded-3xl rounded-tl-sm border border-slate-200/80 shadow-2xs text-xs text-slate-800 leading-relaxed">Saya mencatat pesan Anda: <em>"${text}"</em>. Sistem telah menyinkronkan data dengan dompet dan checklist harian Anda.</div>`;
+        container.appendChild(aiBubble);
+        container.scrollTop = container.scrollHeight;
+      }, 400);
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function clearChat() {
+      document.getElementById('chat-messages').innerHTML = `
+        <div class="flex items-start gap-2.5 max-w-[90%]">
+          <div class="bg-white p-3.5 rounded-3xl rounded-tl-sm border border-slate-200/80 shadow-2xs text-xs text-slate-800 leading-relaxed">
+            Percakapan dibersihkan. Silakan ketik pertanyaan atau perintah baru.
+          </div>
+        </div>
+      `;
+    }
+
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const el = document.getElementById('current-time');
+      if (el) el.innerText = timeStr;
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+  </script>
+</body>
+</html>
