@@ -1,0 +1,30 @@
+---
+description: Enforce zero-slop mobile UI design system, concentric corner radii, and semantic surface hierarchy.
+globs: ["**/*.tsx", "**/*.jsx", "**/*.dart", "**/components/**", "**/screens/**"]
+alwaysApply: true
+---
+
+# MobileCraft UI Core Rule
+
+When creating or modifying mobile components (React Native, Expo, Flutter):
+
+1. **Anti-Slop Visual Constraints:**
+   - NEVER generate purple-to-blue neon gradients (`#8A2BE2` -> `#4169E1`).
+   - NEVER place decorative colored vertical stripes on the edge of cards.
+   - NEVER build "boxes inside boxes". Use a single surface card with inset dividers (`opacity: 0.08`), NOT separate bordered cards for each item.
+   - Do NOT use decorative starbursts (`✨`) or arbitrary "AI-powered" tags.
+
+2. **Concentric Corner Radius Rule:**
+   - Any nested container MUST follow: `Outer Radius = Inner Radius + Padding`.
+   - Never mix random border radii (e.g. parent 12px with child 24px).
+
+3. **Semantic Surfaces & Colors:**
+   - Use strict depth levels: `Canvas` (screen background), `Surface` (cards), `Elevated` (sheets/modals), `Subtle` (inputs/chips).
+   - Never inject raw random hex codes directly inside JSX/TSX. Reference tokens or use a cohesive theme.
+
+4. **Typography & Tabular Numbers:**
+   - All currencies, metrics, timestamps, and counters MUST have `fontVariant: ['tabular-nums']`.
+   - Never use random colored italic serif words in headlines.
+
+5. **Mandatory 4 States:**
+   - Every screen/list must implement: Loading (Skeleton), Empty (Actionable), Error (Retry), and Overflow (`numberOfLines` with `ellipsizeMode="tail"`).
