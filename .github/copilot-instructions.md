@@ -1,28 +1,20 @@
-# MobileCraft: Universal Multi-Language Instructions for GitHub Copilot
+# MobileCraft: Universal 7-Pillar Instructions for GitHub Copilot
 
-When generating or editing mobile frontend code in TypeScript/JavaScript (React Native, Expo, Capacitor, Ionic, PWA), Dart (Flutter), Swift (SwiftUI), or Kotlin (Jetpack Compose):
+When generating or editing Web, Hybrid, or Mobile code (React/Next.js, Vue/Nuxt, SvelteKit, React Native, Flutter, Swift, Kotlin):
 
-Supported Libraries: daisyUI, HeroUI (NextUI), Radix UI / Headless UI, Mantine, Material UI (MUI), Ant Design.
+Enforce The 7 Core Production Pillars:
+1. Core & Meta-Frameworks: React/Next.js (App Router), Vue/Nuxt, SvelteKit, React Native (Expo), Flutter.
+2. Styling & UI Components: Tailwind CSS, shadcn/ui & RN Reusables, Radix/Ark/Headless UI, daisyUI, HeroUI, Mantine, MUI, Ant Design.
+3. State Management: Zustand (client global state) or Jotai/Nanostores (granular atomic state).
+4. Data Fetching & Server State: TanStack Query (React Query) or SWR with Ky/Axios. NEVER write raw useEffect data fetching!
+5. Forms & Schema Validation: React Hook Form paired with Zod or Valibot schemas.
+6. Animation & Interaction: Motion (Framer Motion), GSAP, or React Native Reanimated.
+7. Data Viz, Tables & Iconography: TanStack Table, Recharts / Tremor / Apache ECharts, Lucide Icons or Phosphor Icons.
 
-1. ZERO AI SLOP (NON-NEGOTIABLE):
-   - NEVER use neon purple-blue gradients (`#8A2BE2` -> `#4169E1`). Use disciplined tonal surface hierarchies (`#F8F9FA` canvas with `#FFFFFF` cards in light mode; `#0B0C0E` canvas with `#14161B` in dark mode).
-   - NEVER use boxes inside boxes (nested cards). Group related list items into ONE single card with inset hairline dividers.
-   - NEVER use arbitrary decorative vertical colored stripes on card edges.
-   - NEVER use sparkle icons (✨) or generic "AI-powered" tags.
-   - When using daisyUI, HeroUI, Mantine, MUI, or Ant Design, customize their themes to follow MobileCraft depth tokens rather than leaving default framework boilerplate.
-
-2. CONCENTRIC CORNER RADIUS:
-   - Always follow: `Outer Radius = Inner Radius + Padding`. If card padding is 16 and outer radius is 24, inner elements must have radius 8.
-
-3. THUMB-ZONE ERGONOMICS:
-   - Anchor primary CTAs and interactive bars in the bottom 35% of the viewport.
-   - Interactive touch targets must be at least 44x44pt (iOS) or 48x48dp (Android). Provide `hitSlop` if visual icons are smaller.
-   - Derive safe area insets dynamically (`useSafeAreaInsets` in RN, `SafeArea` in Flutter, `safeAreaInsets` in Swift, `WindowInsets` in Compose).
-
-4. TACTILITY & MOTION:
-   - Interactive buttons must provide spring-based scaling (`scale: 0.97` on press-down) paired with light haptic feedback.
-   - All currencies, numerical stats, timestamps, and counters must use tabular numbers (`tabular-nums`, `FontFeature.tabularFigures()`, or `.monospacedDigit()`).
-   - Dynamic lists must be virtualized (`FlashList`, `ListView.builder`, `LazyVStack`, `LazyColumn`).
-
-5. THE 4 MANDATORY STATES:
-   - Every screen/list must implement: Loading (Skeleton Shimmer), Empty (Actionable), Error (Retry), and Overflow (text truncation).
+Zero-Slop Non-Negotiables:
+- NEVER use neon purple-blue gradients (`#8A2BE2` -> `#4169E1`). Use disciplined tonal surface hierarchies.
+- NEVER use boxes inside boxes (nested cards). Group related list items into ONE single card with inset hairline dividers.
+- Always follow Concentric Corner Radius: `Outer Radius = Inner Radius + Padding`.
+- Mobile ergonomics: Primary CTAs in lower 35% thumb zone; min 44x44pt touch targets; dynamic safe area insets.
+- All currencies, numerical stats, timestamps, and counters must use tabular numbers (`tabular-nums`).
+- Every screen/list must implement the 4 mandatory states: Loading Skeleton, Empty, Error Retry, and Overflow text truncation.

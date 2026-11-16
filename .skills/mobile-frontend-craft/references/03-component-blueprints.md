@@ -1,349 +1,229 @@
-# 03: Component Blueprints (Production-Ready)
+# 03: Component & Architecture Blueprints (Production-Ready)
 
-Use these exact architectural patterns when implementing mobile components. They are designed for React Native with `react-native-reanimated` and `expo-haptics`.
+Use these exact architectural patterns when implementing modern frontend and mobile features.
 
 ---
 
-## 1. TactileButton (Spring Scale + Haptic Feedback)
+## 1. Validated Form with React Hook Form + Zod
 
 ```tsx
 import React from 'react';
-import { StyleSheet, Text, ActivityIndicator, Pressable, ViewStyle, TextStyle } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-interface TactileButtonProps {
-  onPress: () => void;
-  label: string;
-  variant?: 'primary' | 'secondary' | 'subtle';
-  isLoading?: boolean;
-  disabled?: boolean;
-  style?: ViewStyle;
-}
-
-const SPRING_CONFIG = { damping: 15, stiffness: 300, mass: 0.8 };
-
-export const TactileButton: React.FC<TactileButtonProps> = ({
-  onPress,
-  label,
-  variant = 'primary',
-  isLoading = false,
-  disabled = false,
-  style,
-}) => {
-  const scale = useSharedValue(1);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
-  const handlePressIn = () => {
-    if (disabled || isLoading) return;
-    scale.value = withSpring(0.97, SPRING_CONFIG);
-  };
-
-  const handlePressOut = () => {
-    scale.value = withSpring(1, SPRING_CONFIG);
-  };
-
-  const handlePress = () => {
-    if (disabled || isLoading) return;
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onPress();
-  };
-
-  return (
-    <Animated.View style={[styles.wrapper, animatedStyle, style]}>
-      <Pressable
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        onPress={handlePress}
-        disabled={disabled || isLoading}
-        style={[styles.button, styles[variant], disabled && styles.disabled]}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-      >
-        {isLoading ? (
-          <ActivityIndicator color={variant === 'primary' ? '#FFFFFF' : '#0F172A'} />
-        ) : (
-          <Text style={[styles.text, textStyles[variant]]}>{label}</Text>
-        )}
-      </Pressable>
-    </Animated.View>
-  );
-};
-
-const styles = StyleSheet.create({
-  wrapper: { width: '100%' },
-  button: {
-    height: 52,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  primary: { backgroundColor: '#0F172A' },
-  secondary: { backgroundColor: '#F1F5F9' },
-  subtle: { backgroundColor: 'transparent', borderWidth: 1, borderColor: 'rgba(15, 23, 42, 0.12)' },
-  disabled: { opacity: 0.5 },
-  text: { fontSize: 16, fontWeight: '600' },
+export const PaymentSchema = z.object({
+  recipient: z.string().min(5, 'Nama penerima minimal 5 karakter'),
+  amount: z.coerce.number().min(10000, 'Minimal transfer Rp 10.000'),
+  notes: z.string().max(100, 'Catatan maksimal 100 karakter').optional(),
 });
 
-const textStyles = StyleSheet.create({
-  primary: { color: '#FFFFFF' },
-  secondary: { color: '#0F172A' },
-  subtle: { color: '#0F172A' },
-});
-```
+export type PaymentFormData = z.infer<typeof PaymentSchema>;
 
----
-
-## 2. BentoCard (Concentric Corner Radius Rule)
-
-```tsx
-import React, { ReactNode } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
-
-interface BentoCardProps {
-  children: ReactNode;
-  padding?: number;
-  outerRadius?: number;
-  style?: ViewStyle;
-}
-
-export const BentoCard: React.FC<BentoCardProps> = ({
-  children,
-  padding = 16,
-  outerRadius = 24,
-  style,
-}) => {
-  return (
-    <View style={[styles.card, { padding, borderRadius: outerRadius }, style]}>
-      {children}
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: 'rgba(15, 23, 42, 0.06)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 10,
-    elevation: 2,
-  },
-});
-```
-
----
-
-## 3. GroupedList & GroupedRow (Anti-Card-Spam List Pattern)
-
-Never wrap individual list items in separate floating bordered cards. Use one unified container with inset dividers:
-
-```tsx
-import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import * as Haptics from 'expo-haptics';
-
-interface GroupedRowProps {
-  icon: React.ReactNode;
-  title: string;
-  subtitle?: string;
-  value?: string;
-  isLast?: boolean;
-  onPress?: () => void;
-}
-
-export const GroupedRow: React.FC<GroupedRowProps> = ({
-  icon,
-  title,
-  subtitle,
-  value,
-  isLast = false,
-  onPress,
-}) => {
-  return (
-    <Pressable
-      onPress={() => {
-        if (onPress) {
-          Haptics.selectionAsync();
-          onPress();
-        }
-      }}
-      style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
-    >
-      <View style={styles.iconContainer}>{icon}</View>
-      <View style={[styles.contentContainer, !isLast && styles.hairlineDivider]}>
-        <View style={styles.textGroup}>
-          <Text style={styles.title} numberOfLines={1}>{title}</Text>
-          {subtitle && <Text style={styles.subtitle} numberOfLines={1}>{subtitle}</Text>}
-        </View>
-        {value && <Text style={styles.value}>{value}</Text>}
-      </View>
-    </Pressable>
-  );
-};
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    height: 64,
-  },
-  rowPressed: { backgroundColor: 'rgba(0, 0, 0, 0.03)' },
-  iconContainer: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  contentContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: '100%',
-    marginLeft: 12,
-  },
-  hairlineDivider: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(15, 23, 42, 0.06)',
-  },
-  textGroup: { flex: 1, paddingRight: 8 },
-  title: { fontSize: 15, fontWeight: '600', color: '#0F172A' },
-  subtitle: { fontSize: 13, color: '#64748B', marginTop: 2 },
-  value: { fontSize: 15, fontWeight: '500', color: '#0F172A', fontVariant: ['tabular-nums'] },
-});
-```
-
----
-
-## 4. ModernInput (Recessed Surface, Focus Ring, Clear Action)
-
-```tsx
-import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet, Pressable } from 'react-native';
-
-interface ModernInputProps {
-  label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  placeholder?: string;
-  error?: string;
-  secureTextEntry?: boolean;
-}
-
-export const ModernInput: React.FC<ModernInputProps> = ({
-  label,
-  value,
-  onChangeText,
-  placeholder,
-  error,
-  secureTextEntry = false,
-}) => {
-  const [isFocused, setIsFocused] = useState(false);
+export const QuickPaymentForm: React.FC<{ onSubmit: (data: PaymentFormData) => void }> = ({ onSubmit }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<PaymentFormData>({
+    resolver: zodResolver(PaymentSchema),
+  });
 
   return (
-    <View style={styles.wrapper}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={[
-        styles.inputContainer,
-        isFocused && styles.inputFocused,
-        !!error && styles.inputError,
-      ]}>
-        <TextInput
-          style={styles.input}
-          value={value}
-          onChangeText={onChangeText}
-          placeholder={placeholder}
-          placeholderTextColor="#94A3B8"
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          secureTextEntry={secureTextEntry}
+    <form onSubmit={handleSubmit(onSubmit)} class="space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">Rekening / E-Wallet Tujuan</label>
+        <input
+          {...register('recipient')}
+          class="w-full h-12 px-4 rounded-2xl bg-slate-100 border border-transparent focus:border-slate-900 focus:bg-white text-sm outline-none transition-all"
+          placeholder="e.g. 081234567890 (GoPay)"
         />
-        {value.length > 0 && (
-          <Pressable onPress={() => onChangeText('')} hitSlop={10} style={styles.clearButton}>
-            <Text style={styles.clearText}>✕</Text>
-          </Pressable>
-        )}
-      </View>
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
-    </View>
+        {errors.recipient && <p class="text-xs text-rose-500 mt-1 font-medium">{errors.recipient.message}</p>}
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1.5">Nominal Transfer (Rp)</label>
+        <input
+          type="number"
+          {...register('amount')}
+          class="w-full h-12 px-4 rounded-2xl bg-slate-100 border border-transparent focus:border-slate-900 focus:bg-white text-sm tabular-nums outline-none transition-all"
+          placeholder="50000"
+        />
+        {errors.amount && <p class="text-xs text-rose-500 mt-1 font-medium">{errors.amount.message}</p>}
+      </div>
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        class="w-full h-13 rounded-2xl bg-slate-950 text-white font-bold text-sm flex items-center justify-center transition-transform active:scale-[0.97]"
+      >
+        {isSubmitting ? 'Memproses...' : 'Kirim Sekarang'}
+      </button>
+    </form>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: { width: '100%', marginBottom: 16 },
-  label: { fontSize: 13, fontWeight: '600', color: '#475569', marginBottom: 6 },
-  inputContainer: {
-    height: 52,
-    backgroundColor: '#F8FAFC',
-    borderRadius: 14,
-    borderWidth: 1.5,
-    borderColor: 'transparent',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 14,
-  },
-  inputFocused: {
-    borderColor: '#0F172A',
-    backgroundColor: '#FFFFFF',
-  },
-  inputError: {
-    borderColor: '#EF4444',
-  },
-  input: { flex: 1, fontSize: 15, color: '#0F172A' },
-  clearButton: { padding: 4 },
-  clearText: { color: '#94A3B8', fontSize: 12, fontWeight: '700' },
-  errorText: { fontSize: 12, color: '#EF4444', marginTop: 4 },
-});
 ```
 
 ---
 
-## 5. Skeleton Shimmer (Loading State Guard)
+## 2. Server State with TanStack Query + Ky
+
+```typescript
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import ky from 'ky';
+
+const api = ky.create({ prefixUrl: '/api' });
+
+export interface WalletBalance {
+  total: number;
+  currency: string;
+  monthlyGrowth: number;
+}
+
+export function useWallet() {
+  return useQuery({
+    queryKey: ['wallet-balance'],
+    queryFn: () => api.get('wallet').json<WalletBalance>(),
+    staleTime: 1000 * 60 * 3, // 3 mins cache
+  });
+}
+
+export function useSendMoney() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: { recipient: string; amount: number }) =>
+      api.post('transfer', { json: payload }).json(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wallet-balance'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+    },
+  });
+}
+```
+
+---
+
+## 3. Global Client State with Zustand
+
+```typescript
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+interface AppPreferenceState {
+  isBalanceHidden: boolean;
+  activeTheme: 'crisp-daylight' | 'obsidian-dark';
+  toggleBalance: () => void;
+  setTheme: (theme: 'crisp-daylight' | 'obsidian-dark') => void;
+}
+
+export const useAppStore = create<AppPreferenceState>()(
+  persist(
+    (set) => ({
+      isBalanceHidden: false,
+      activeTheme: 'crisp-daylight',
+      toggleBalance: () => set((state) => ({ isBalanceHidden: !state.isBalanceHidden })),
+      setTheme: (theme) => set({ activeTheme: theme }),
+    }),
+    { name: 'app-preferences' }
+  )
+);
+```
+
+---
+
+## 4. Tactile Bottom Drawer with Motion (Framer Motion)
 
 ```tsx
-import React, { useEffect } from 'react';
-import { ViewStyle, StyleSheet } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export const Skeleton: React.FC<{ width: number | `${number}%`; height: number; radius?: number; style?: ViewStyle }> = ({
-  width,
-  height,
-  radius = 8,
-  style,
-}) => {
-  const opacity = useSharedValue(0.4);
+interface DrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}
 
-  useEffect(() => {
-    opacity.value = withRepeat(
-      withTiming(0.85, { duration: 800, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    );
-  }, []);
-
-  const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
-
+export const TactileDrawer: React.FC<DrawerProps> = ({ isOpen, onClose, title, children }) => {
   return (
-    <Animated.View
-      style={[
-        styles.skeleton,
-        { width, height, borderRadius: radius },
-        animatedStyle,
-        style,
-      ]}
-    />
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            class="fixed inset-0 bg-black/50 z-40 backdrop-blur-xs"
+          />
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 280 }}
+            class="fixed bottom-0 left-0 right-0 max-w-[430px] mx-auto bg-white rounded-t-[36px] p-6 z-50 shadow-2xl border-t border-slate-100"
+          >
+            <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-4" />
+            <h3 class="text-base font-bold text-slate-950 text-center mb-4">{title}</h3>
+            {children}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
+```
 
-const styles = StyleSheet.create({
-  skeleton: { backgroundColor: '#E2E8F0' },
-});
+---
+
+## 5. Clean Analytics Chart with Recharts (Tabular Nums & Zero Slop)
+
+```tsx
+import React from 'react';
+import { ResponsiveContainer, AreaChart, Area, XAxis, Tooltip } from 'recharts';
+
+const data = [
+  { day: 'Sen', amount: 1200000 },
+  { day: 'Sel', amount: 850000 },
+  { day: 'Rab', amount: 2100000 },
+  { day: 'Kam', amount: 1400000 },
+  { day: 'Jum', amount: 2900000 },
+  { day: 'Sab', amount: 3800000 },
+  { day: 'Min', amount: 1950000 },
+];
+
+export const SpendingTrendChart: React.FC = () => {
+  return (
+    <div class="w-full h-44 bg-white rounded-[24px] p-4 border border-slate-200/90 shadow-xs">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tren Pengeluaran 7 Hari</span>
+        <span class="text-xs font-bold text-slate-900 tabular-nums">Total: Rp 14.200.000</span>
+      </div>
+      <ResponsiveContainer width="100%" height="80%">
+        <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+          <defs>
+            <linearGradient id="spendingGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#0F172A" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="#0F172A" stopOpacity={0.0} />
+            </linearGradient>
+          </defs>
+          <XAxis dataKey="day" stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
+          <Tooltip
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div class="bg-slate-950 text-white text-xs px-2.5 py-1.5 rounded-xl font-bold tabular-nums shadow-lg">
+                    Rp {Number(payload[0].value).toLocaleString('id-ID')}
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
+          <Area type="monotone" dataKey="amount" stroke="#0F172A" strokeWidth={2.5} fill="url(#spendingGradient)" />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
 ```

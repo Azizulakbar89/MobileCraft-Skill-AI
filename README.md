@@ -1,70 +1,96 @@
-# 📱 MobileCraft: Universal Zero-Slop Mobile Frontend AI Skill Pack
+# 📱 MobileCraft: Universal 7-Pillar Production AI Skill Pack
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Production--Ready-emerald?style=for-the-badge" alt="Status">
-  <img src="https://img.shields.io/badge/Languages-TS%2FJS%20%7C%20Dart%20%7C%20Swift%20%7C%20Kotlin-blue?style=for-the-badge" alt="Languages">
-  <img src="https://img.shields.io/badge/Frameworks-React%20Native%20%7C%20Flutter%20%7C%20SwiftUI%20%7C%20Compose%20%7C%20PWA-violet?style=for-the-badge" alt="Frameworks">
+  <img src="https://img.shields.io/badge/Architecture-7%20Core%20Production%20Pillars-blue?style=for-the-badge" alt="Architecture">
+  <img src="https://img.shields.io/badge/Platforms-Web%20%7C%20Hybrid%20%7C%20Mobile-violet?style=for-the-badge" alt="Platforms">
 </p>
 
-> **Eliminate "AI Slop" across ANY mobile language and framework.**  
-> Transform Cursor, Claude Code, Google Antigravity, Windsurf, and GitHub Copilot into an elite **Universal Mobile Principal UI/UX Architect**.  
-> Produces clean, thumb-friendly, spring-animated mobile interfaces inspired by **Mobbin**, **Apple HIG**, and **Material 3 Expressive**.
+> **Eliminate "AI Slop" completely across Web and Mobile development.**  
+> Transform Cursor, Claude Code, Google Antigravity, Windsurf, and GitHub Copilot into an elite **Principal Fullstack & Mobile Architect**.  
+> Produces clean, thumb-friendly, spring-animated, and battle-tested production code built strictly on the **7 Core Production Pillars**.
 
 ---
 
-## 📚 Pustaka UI Unggulan yang Didukung (Curated Libraries)
+## 🏛️ Fondasi 7 Pilar Produksi Modern (The 7 Core Pillars)
 
-MobileCraft menyertakan panduan khusus untuk menghilangkan *slop bawaan* dari 6 pustaka komponen populer saat dipakai untuk antarmuka mobile:
-
-| Nama Pustaka | Pendekatan Utama | Kelebihan Utama & Peran di MobileCraft |
-| :--- | :--- | :--- |
-| **[daisyUI](https://daisyui.com/)** | Plugin kelas komponen untuk Tailwind CSS | Ringan tanpa membawa JavaScript tambahan dan mendukung multi-theme instan. Di-tuning agar warna tidak *oversaturated* dan mengikuti sistem token kedalaman. |
-| **[HeroUI](https://www.heroui.com/)** *(NextUI)* | Pustaka komponen berbasis Tailwind & React Aria | Tampilan modern dengan animasi halus bawaan yang siap pakai tanpa banyak konfigurasi. Dioptimalkan agar bebas dari efek blur *glassmorphism* berlebihan. |
-| **[Radix UI](https://www.radix-ui.com/)** / **[Headless UI](https://headlessui.com/)** | Komponen headless (tanpa gaya bawaan) | Kebebasan desain 100% dari nol dengan logika interaksi & aksesibilitas teruji. Diberikan styling *concentric radius* dan *bottom sheet drawer*. |
-| **[Mantine](https://mantine.dev/)** | Pustaka komponen React lengkap *(full-featured)* | Menyediakan lebih dari 100 komponen dan hooks kompleks (DataTable, Charts, Rich Text Editor). Diadaptasi agar tabel dan dialog desktop otomatis menjadi kartu mobile. |
-| **[Material UI (MUI)](https://mui.com/)** | Sistem desain berbasis Google Material Design | Ekosistem sangat matang dengan dokumentasi lengkap untuk aplikasi skala besar. Di-override agar tidak bergaya kotak kaku bawaan tahun 2014. |
-| **[Ant Design](https://ant.design/)** | Sistem desain tingkat perusahaan *(enterprise)* | Sangat kuat untuk membangun dashboard admin, CRM, dan sistem internal yang padat data. Disesuaikan dengan batas sentuh jari manusia ($44\text{pt}+$ touch target). |
-
----
-
-## 🌍 Kompatibilitas Lintas Bahasa Pemrograman Mobile
-
-Skill ini **tidak terikat pada satu bahasa saja**. MobileCraft dirancang dengan arsitektur aturan universal yang dapat diterapkan pada bahasa apapun yang mampu membangun aplikasi mobile:
+Skill ini memaksa AI agent untuk selalu menggunakan arsitektur 7 pilar standar industri kelas dunia:
 
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│                   MobileCraft Core Rules Engine                        │
-│   (Thumb-Zone + Concentric Radius + Spring Physics + Tabular Nums)     │
-└──────────────────────────────────┬─────────────────────────────────────┘
-                                   │
-      ┌────────────────────────────┼────────────────────────────┐
-      ▼                            ▼                            ▼
-[TypeScript / JS]               [Dart]                  [Swift & Kotlin]
-• React Native / Expo         • Flutter                 • iOS (SwiftUI)
-• PWA / Capacitor / Ionic     • Material 3              • Android (Jetpack Compose)
-(daisyUI, HeroUI, Radix,      (Slivers, BouncingScroll, (Liquid Glass, Spring Physics,
- Mantine, MUI, AntD)           AnimatedScale, Haptics)   SensoryFeedback, M3 Surface)
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        THE 7 CORE PRODUCTION PILLARS                                  │
+├────────────────────────────────┬───────────────────────────────────────────────────────┤
+│ 1. Core & Meta-Frameworks      │ React / Next.js (App Router), Vue / Nuxt, SvelteKit,  │
+│                                │ React Native (Expo), Flutter                          │
+├────────────────────────────────┼───────────────────────────────────────────────────────┤
+│ 2. Styling & UI Components     │ Tailwind CSS, shadcn/ui & React Native Reusables,     │
+│                                │ Headless UI / Radix / Ark UI, daisyUI, HeroUI, Mantine│
+│                                │ Ant Design, Material UI (MUI)                         │
+├────────────────────────────────┼───────────────────────────────────────────────────────┤
+│ 3. State Management            │ Zustand (Client State), Jotai / Nanostores (Atomic),  │
+│                                │ Redux Toolkit (Enterprise RTK)                        │
+├────────────────────────────────┼───────────────────────────────────────────────────────┤
+│ 4. Data Fetching & Server State│ TanStack Query (React Query), SWR, Ky / Axios + Hooks │
+├────────────────────────────────┼───────────────────────────────────────────────────────┤
+│ 5. Forms & Schema Validation   │ React Hook Form + Zod / Valibot                       │
+├────────────────────────────────┼───────────────────────────────────────────────────────┤
+│ 6. Animation & Interaction     │ Motion (Framer Motion), GSAP, React Native Reanimated │
+├────────────────────────────────┼───────────────────────────────────────────────────────┤
+│ 7. Data Viz, Tables & Icons    │ TanStack Table, Recharts / Tremor / Apache ECharts,   │
+│                                │ Lucide Icons / Phosphor Icons                         │
+└────────────────────────────────┴───────────────────────────────────────────────────────┘
 ```
-
-| Bahasa | Ekosistem / Framework | Implementasi Komponen MobileCraft |
-| :--- | :--- | :--- |
-| **TypeScript / JavaScript** | **React Native & Expo** | `react-native-reanimated` (Springs), `expo-haptics`, `@shopify/flash-list`, NativeWind. |
-| **TypeScript / JavaScript** | **Mobile Web / PWA / Capacitor / Ionic** | Tailwind CSS + **daisyUI / HeroUI / Radix / Mantine / MUI / Ant Design** + Framer Motion. |
-| **Dart** | **Flutter** | `AnimatedScale` (Scale 0.97), `HapticFeedback`, `ListView.builder`, `CustomScrollView`. |
-| **Swift** | **iOS Native (SwiftUI)** | `.spring(response:dampingRatio:)`, `.sensoryFeedback()`, `LazyVStack`, safe area insets. |
-| **Kotlin** | **Android Native (Jetpack Compose)** | `spring()`, `LocalHapticFeedback.current`, `LazyColumn`, Material 3 Expressive surfaces. |
 
 ---
 
-## ⚡ The Problem: What is "Mobile AI Slop"?
+### 1. Core Framework & Meta-Framework (Fondasi)
+* **React & Next.js:** Standar industri untuk web modern dengan dukungan Server-Side Rendering (SSR), Server Components (RSC), dan App Router.
+* **Vue & Nuxt:** Alternatif intuitif dengan kurva belajar landai, performa tinggi, dan Composition API.
+* **Svelte & SvelteKit:** Compiler-based framework yang menghasilkan bundle sangat ringan tanpa Virtual DOM overhead.
+* **React Native (Expo) & Flutter:** Pilihan utama untuk membangun aplikasi mobile cross-platform dengan performa mendekati native (60–120 FPS).
 
-Standard LLMs are trained mostly on desktop web landing pages. When asked to write mobile code, they default to:
+### 2. Styling & UI Component Libraries
+* **Tailwind CSS:** Utility-first CSS framework untuk penulisan gaya konsisten berbasis design tokens.
+* **shadcn/ui (Web) & React Native Reusables (Mobile):** Koleksi komponen copy-paste berbasis headless primitives (Radix UI) yang memberi kendali penuh atas kode dan desain.
+* **Headless UI / Radix UI / Ark UI:** Logika aksesibilitas (keyboard navigation, ARIA attributes) tanpa memaksakan gaya visual tertentu.
+* **daisyUI, HeroUI, Mantine, Ant Design, Material UI (MUI):** Pustaka komponen yang di-tuning khusus agar bebas dari warna neon murahan dan kaku.
+
+### 3. State Management (Pengelolaan Data Aplikasi)
+* **Zustand:** Solusi default untuk client state global yang ringan, minim boilerplate, dan mudah diintegrasikan.
+* **Jotai / Nanostores:** Pendekatan atomic state granular agar micro-komponen re-render secara independen.
+* **Redux Toolkit (RTK):** Untuk aplikasi skala enterprise yang membutuhkan pola arsitektur ketat dan time-travel debugging.
+
+### 4. Data Fetching & Server State
+> **Anti-Slop Rule:** Dilarang menyimpan data fetch API dalam raw `useEffect + useState`!
+* **TanStack Query (React Query):** Standar emas untuk fetching data asinkron, caching, optimistic updates, dan infinite scrolling.
+* **SWR:** Alternatif ringan buatan Vercel untuk strategi stale-while-revalidate.
+* **Ky / Axios:** HTTP client dengan interceptors otomatis untuk menyisipkan header token autentikasi.
+
+### 5. Form Management & Validasi Skema
+* **React Hook Form:** Mengelola formulir kompleks tanpa re-render yang tidak perlu sehingga performa tetap mulus.
+* **Zod / Valibot:** Validasi skema berbasis TypeScript end-to-end yang menjamin data aman sebelum dikirim ke server.
+
+### 6. Animasi & Interaksi Visual
+* **Motion (sebelumnya Framer Motion):** Library animasi deklaratif terbaik untuk React dengan dukungan layout animations dan gestur.
+* **GSAP (GreenSock):** Standar untuk animasi kompleks berbasis timeline dan efek scroll tingkat lanjut.
+* **React Native Reanimated:** Animasi native berjalan mulus di UI Thread (60–120 FPS) dengan worklets.
+
+### 7. Data Visualization, Tabel & Ikonografi
+* **TanStack Table:** Headless UI untuk tabel data dengan sorting, filtering, dan virtualized pagination.
+* **Recharts / Tremor / Apache ECharts:** Grafik analitik dan diagram keuangan interaktif bebas slop.
+* **Lucide Icons / Phosphor Icons:** Ikon vektor bersih, ringan (tree-shakeable), dengan ketebalan garis konsisten ($1.75\text{–}2.0$).
+
+---
+
+## ⚡ The Problem: What is "AI Slop"?
+
+Standard LLMs default to predictable boilerplate bad practices:
 * ❌ **Neon purple-to-blue gradients** slapped on buttons and hero headers.
 * ❌ **Boxes inside boxes** (nesting cards inside cards inside cards).
 * ❌ **Arbitrary colored stripes** on the left edge of cards.
-* ❌ **Trapped top-corner buttons** unreachable by human thumbs.
-* ❌ **Static, lifeless buttons** with no press feedback, spring physics, or haptics.
-* ❌ **Numbers jumping around** because the AI forgot tabular numbers (`tabular-nums`).
+* ❌ **Trapped top-corner buttons** unreachable by human thumbs on mobile.
+* ❌ **Raw `useEffect` fetch slop** causing race conditions and UI flickering.
+* ❌ **Laggy forms with 10 separate `useState`** without schema validation.
 * ❌ **Ignoring safe areas** (content crashing into iPhone Dynamic Island / notch / home indicator).
 
 ---
@@ -73,45 +99,31 @@ Standard LLMs are trained mostly on desktop web landing pages. When asked to wri
 
 ### 1. 🖱️ Cursor IDE
 * **File:** `.cursor/rules/mobile-ui-core.mdc` & `mobile-motion-ergonomics.mdc`.
-* **Cakupan File:** Otomatis aktif pada `*.tsx`, `*.jsx`, `*.dart`, `*.swift`, `*.kt`, `*.vue`, `*.svelte`.
-* **Hasil:** Komponen mobile langsung memiliki radius konsentris optik, tombol membal Reanimated/SwiftUI/Flutter, dan daftar tervirtualisasi.
+* **Cakupan:** Otomatis aktif pada `*.tsx`, `*.jsx`, `*.dart`, `*.swift`, `*.kt`, `*.vue`, `*.svelte`.
+* **Hasil:** Komponen langsung menerapkan React Hook Form + Zod, TanStack Query, dan token concentric radius.
 
 ### 2. 🤖 Claude Code (Anthropic CLI)
 * **File:** `.skills/mobile-frontend-craft/SKILL.md` & `references/`.
 * **Cara Pakai:** Salin folder `.skills/` ke root proyek. Tautkan di `CLAUDE.md`:
   ```markdown
-  Read and strictly adhere to .skills/mobile-frontend-craft/SKILL.md for all mobile UI tasks.
+  Read and strictly adhere to .skills/mobile-frontend-craft/SKILL.md for all frontend and mobile tasks.
   ```
 * **Hasil:** Claude Code mengeksekusi pipeline 4-tahap wajib dan selalu menangani 4 state: **Skeleton Loading, Empty, Error Retry, Overflow**.
 
 ### 3. 🛸 Google Antigravity
 * **File:** `.skills/mobile-frontend-craft/SKILL.md`.
 * **Cara Pakai:** Taruh di folder proyek atau di `~/.gemini/antigravity/skills/`.
-* **Hasil:** Antigravity secara otomatis memanggil referensi token desain, aturan library, dan fisika gerak secara efisien (*progressive disclosure*).
+* **Hasil:** Antigravity secara otomatis memanggil arsitektur 7 pilar dan blueprint kode sesuai kebutuhan (*progressive disclosure*).
 
 ### 4. 🌊 Windsurf IDE (Codeium)
 * **File:** `.windsurfrules`.
 * **Cara Pakai:** Salin `.windsurfrules` ke root proyek Anda.
-* **Hasil:** AI Cascade membaca aturan emas MobileCraft pada setiap putaran kode, mencegah layout box-in-box dan tombol kaku.
+* **Hasil:** AI Cascade membaca aturan 7 pilar pada setiap giliran kode, memastikan form tervalidasi dan state terkelola rapi.
 
 ### 5. 🐙 GitHub Copilot
 * **File:** `.github/copilot-instructions.md`.
 * **Cara Pakai:** Salin folder `.github/` ke repositori Anda.
-* **Hasil:** Autocompletion dan Copilot Chat otomatis memprioritaskan touch target 44pt+, tabular numbers, dan safe areas.
-
----
-
-## 🎨 Perbandingan Kualitas: Bawaan AI vs MobileCraft
-
-| Parameter | AI Default (Bawaan) | Dengan MobileCraft Skill |
-| :--- | :--- | :--- |
-| **Palet Warna** | Gradien ungu-neon acak, tombol glow | **Tonal Surface Hierarchy** (`Canvas` $\rightarrow$ `Surface` $\rightarrow$ `Elevated`) |
-| **Pengelompokan List** | Kotak di dalam kotak bertumpuk (*card spam*) | **1 Card Induk** dengan *inset hairline divider* (standar Apple Settings) |
-| **Ergonomi** | Tombol submit ditaruh di pojok atas | **Thumb-Zone Anchor**: CTA selalu di 35% area bawah layar |
-| **Geometri Sudut** | Radius acak (4px, 12px, 30px campur) | **Concentric Rule**: `OuterRadius = InnerRadius + Padding` |
-| **Karakter Angka** | Angka bergeser saat update saldo | Wajib `tabular-nums` / `FontFeature.tabularFigures()` / `.monospacedDigit()` |
-| **Sentuhan & Fisik** | Kaku, flat, tanpa respons saat disentuh | **Spring Physics Scale (0.97)** + Haptic Feedback native lintas bahasa |
-| **Edge Cases** | Hanya kondisi ideal (*happy path*) | Wajib 4 state: **Skeleton Loading, Empty, Error, Overflow** |
+* **Hasil:** Saran autocompletion otomatis mengutamakan Zustand, TanStack Query, Zod, Lucide Icons, dan touch target 44pt+.
 
 ---
 
@@ -121,19 +133,20 @@ Standard LLMs are trained mostly on desktop web landing pages. When asked to wri
 MobileCraft-Skill-AI/
 ├── .cursor/
 │   └── rules/
-│       ├── mobile-ui-core.mdc             # Aturan visual, palet warna, concentric radius (Universal)
+│       ├── mobile-ui-core.mdc             # Aturan 7 pilar, visual, palet warna, concentric radius
 │       └── mobile-motion-ergonomics.mdc   # Aturan thumb-zone, safe area, spring physics
 ├── .github/
-│   └── copilot-instructions.md            # Aturan resmi untuk GitHub Copilot
+│   └── copilot-instructions.md            # Aturan 7 pilar untuk GitHub Copilot
 ├── .skills/
 │   └── mobile-frontend-craft/
-│       ├── SKILL.md                       # Orchestrator alur kerja wajib & library rules
+│       ├── SKILL.md                       # Orchestrator alur kerja wajib 7 pilar
 │       └── references/
-│           ├── 01-anti-slop-guardrails.md # Panduan larangan pola slop & audit tiap library
+│           ├── 01-anti-slop-guardrails.md # Larangan pola slop visual & arsitektural
 │           ├── 02-design-tokens-themes.md # Grid 4pt/8pt & pemetaan TS/Dart/Swift/Kotlin
-│           ├── 03-component-blueprints.md # Blueprint kode siap pakai lintas bahasa & library
-│           ├── 04-motion-and-haptics.md   # Preset spring physics Reanimated, Flutter, SwiftUI, Compose
-│           └── 05-platform-ergonomics.md  # Safe Area, Dynamic Island & Keyboard avoidance
+│           ├── 03-component-blueprints.md # Blueprint form Zod, TanStack Query, Zustand, Recharts
+│           ├── 04-motion-and-haptics.md   # Preset spring physics Motion, Reanimated, Flutter, SwiftUI
+│           ├── 05-platform-ergonomics.md  # Safe Area, Dynamic Island & Keyboard avoidance
+│           └── 06-fullstack-frontend-stack.md # Manual lengkap arsitektur 7 pilar
 ├── .windsurfrules                         # Aturan praktis untuk Windsurf Cascade
 └── README.md                              # Dokumentasi lengkap
 ```

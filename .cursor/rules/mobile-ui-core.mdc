@@ -1,32 +1,33 @@
 ---
-description: Enforce zero-slop mobile UI design across React Native, Flutter, Swift, Kotlin, and Web/PWA with curated libraries (daisyUI, HeroUI, Radix, Mantine, MUI, AntD).
+description: Enforce the 7 Core Production Pillars, state management, form validation, and zero-slop UI across all modern frontend & mobile stacks.
 globs: ["**/*.tsx", "**/*.jsx", "**/*.dart", "**/*.swift", "**/*.kt", "**/*.vue", "**/*.svelte", "**/components/**", "**/screens/**"]
 alwaysApply: true
 ---
 
-# MobileCraft Multi-Language & Library UI Core Rule
+# MobileCraft 7-Pillar Production Core Rule
 
-When creating or modifying mobile components (React Native, Flutter, SwiftUI, Jetpack Compose, or Mobile Web/PWA):
+When creating or modifying frontend and mobile components:
 
-1. **Anti-Slop Visual Constraints (Universal):**
+1. **The 7 Core Production Pillars (Enforced):**
+   - **Frameworks:** React/Next.js (App Router), Vue/Nuxt, SvelteKit, React Native (Expo), Flutter.
+   - **Styling & Components:** Tailwind CSS + shadcn/ui & RN Reusables, Radix/Ark/Headless UI, daisyUI, HeroUI, Mantine, MUI, Ant Design.
+   - **State Management:** Wajib **Zustand** (client global) atau **Jotai/Nanostores** (atomic). Jangan prop-drill!
+   - **Data Fetching:** Wajib **TanStack Query (React Query)** atau **SWR** dengan **Ky/Axios**. DILARANG raw `useEffect` fetch!
+   - **Forms & Validation:** Wajib **React Hook Form** dipadukan dengan skema **Zod** atau **Valibot**.
+   - **Motion & Physics:** Gunakan **Motion (Framer Motion)**, **GSAP**, atau **React Native Reanimated** (worklets 60-120fps).
+   - **Data Viz & Icons:** **TanStack Table** (tabel headless), **Recharts / Tremor / ECharts** (grafik analitik), **Lucide / Phosphor Icons** (vektor konsisten).
+
+2. **Anti-Slop Visual Constraints:**
    - NEVER generate purple-to-blue neon gradients (`#8A2BE2` -> `#4169E1`).
    - NEVER place decorative colored vertical stripes on the edge of cards.
-   - NEVER build "boxes inside boxes". Use a single surface card with inset dividers, NOT separate bordered cards for each item.
+   - NEVER build "boxes inside boxes". Use a single surface card with inset dividers.
    - Do NOT use decorative starbursts (`✨`) or arbitrary "AI-powered" tags.
 
-2. **Supported UI Library Rules:**
-   - **daisyUI:** Override default saturated colors; bind to semantic tokens (`canvas`, `surface`, `border-hairline`).
-   - **HeroUI:** Avoid muddy stacked glassmorphism. Use crisp surface cards with hairline borders.
-   - **Radix UI / Headless UI:** Wrap unstyled primitives with $44\text{pt}+$ touch targets and bottom-docked sheets.
-   - **Mantine:** Use bottom `Drawer` instead of centered popups; convert desktop tables to card lists.
-   - **Material UI (MUI):** Override default `#1976d2` buttons with disciplined palette and 16px+ border radius.
-   - **Ant Design:** Replace desktop tables with card rows; scale small action buttons to minimum 44pt height.
-
 3. **Concentric Corner Radius Formula:**
-   - `Outer Radius = Inner Radius + Padding`. Ensure visual harmony across all nested containers.
+   - `Outer Radius = Inner Radius + Padding`. Ensure optical harmony across all nested containers.
 
-4. **Typography & Tabular Numbers:**
-   - All currencies, metrics, and counters MUST use tabular numbers (`fontVariant: ['tabular-nums']` in RN, `FontFeature.tabularFigures()` in Flutter, `.monospacedDigit()` in SwiftUI).
+4. **Typography & Tabular Figures:**
+   - All currencies, metrics, timestamps, and counters MUST use tabular numbers (`tabular-nums`, `FontFeature.tabularFigures()`, `.monospacedDigit()`).
 
 5. **Mandatory 4 States:**
-   - Every screen/list must implement: Loading (Skeleton), Empty (Actionable), Error (Retry), and Overflow (`numberOfLines` / text truncation).
+   - Every screen/list must implement: Loading (Skeleton), Empty (Actionable), Error (Retry), and Overflow (text truncation).

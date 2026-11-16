@@ -1,10 +1,10 @@
-# 01: Anti-Slop Guardrails & Library-Specific Pitfalls
+# 01: Anti-Slop Guardrails & Architectural Pitfalls
 
-This document defines forbidden visual patterns and library-specific slop traps across React Native, Flutter, SwiftUI, Jetpack Compose, and Mobile Web (Capacitor/Ionic/PWA).
+This document defines forbidden visual and architectural patterns across Web, Hybrid, and Mobile applications.
 
 ---
 
-## 1. Universal Visual Slop Pitfalls (All Languages)
+## 1. Visual Slop Pitfalls (DILARANG)
 
 ### ❌ Pattern 1: The Electric Purple-Blue Gradient Hero
 - **The Sin:** Linear gradients from `#8A2BE2` to `#4169E1` on buttons, card headers, or ambient background blobs.
@@ -29,42 +29,36 @@ This document defines forbidden visual patterns and library-specific slop traps 
 
 ---
 
-## 2. Library-Specific Slop Traps & How to Fix Them
+## 2. Architectural & Code Slop Pitfalls (DILARANG)
 
-### 🎨 daisyUI Slop Trap
-* **The Slop:** Using uncustomized default saturated color classes (`btn-primary`, `badge-secondary`) which default to bright cyan/pink candy palettes.
-* **The Fix:** Map daisyUI's `tailwind.config.js` themes to MobileCraft semantic tokens:
-  ```javascript
-  daisyui: {
-    themes: [{
-      mobilecraft: {
-        "primary": "#0F172A",
-        "secondary": "#64748B",
-        "accent": "#0284C7",
-        "neutral": "#F8F9FA",
-        "base-100": "#FFFFFF",
-        "base-200": "#F1F5F9",
-      }
-    }]
-  }
+### ❌ Pattern 6: The `useEffect` Data Fetching Slop
+- **The Sin:** Writing raw `useEffect(() => { fetch('/api/data').then(...) }, [])` with multiple `useState` for loading, error, and data. Causes race conditions, missing cache, and zero optimistic updates.
+- **The Fix:** Always use **TanStack Query (React Query)** or **SWR**.
+  ```typescript
+  // ✅ GOOD
+  const { data, isLoading, error } = useQuery({ queryKey: ['wallet'], queryFn: fetchWallet });
   ```
 
-### ⚡ HeroUI (NextUI) Slop Trap
-* **The Slop:** Overusing heavy backdrop-blur cards (`backdrop-blur-md` on stacked elements) causing visual mud and poor text contrast.
-* **The Fix:** Use solid surface cards with subtle hairline borders (`border-default-100`). Leverage HeroUI's built-in spring motion and accessible tabs rather than stacking glass layers.
+### ❌ Pattern 7: The Uncontrolled 10-`useState` Form Slop
+- **The Sin:** Managing forms with separate `const [email, setEmail] = useState('')` for every field, re-rendering the entire page on every keystroke with zero schema validation.
+- **The Fix:** Always pair **React Hook Form** with **Zod** or **Valibot**.
+  ```typescript
+  // ✅ GOOD
+  const form = useForm({ resolver: zodResolver(UserSchema) });
+  ```
 
-### 🧩 Radix UI / Headless UI Slop Trap
-* **The Slop:** Forgetting touch targets or keyboard avoidance because headless components have zero default CSS.
-* **The Fix:** Always wrap Radix/Headless triggers with minimum `min-h-[44px] min-w-[44px]` and anchor Sheet / Dialog components to the bottom (`items-end` with `slide-in-from-bottom`) for mobile ergonomics.
+### ❌ Pattern 8: Monolithic Global State Slop
+- **The Sin:** Putting local component states or server cache directly into monolithic Redux / Context, causing massive unnecessary re-render cascades across the app.
+- **The Fix:** Separate concerns:
+  - Server State: **TanStack Query**
+  - Global Client State: **Zustand**
+  - Atomic Fine-Grained State: **Jotai / Nanostores**
+  - Local Transient UI: `useState`
 
-### 🛡️ Mantine Slop Trap
-* **The Slop:** Using desktop-density tables (`Table`) or centered modal popups (`Modal`) on phone viewports.
-* **The Fix:** In Mantine, always use `Drawer` with `position="bottom"` for modals on mobile, and replace `Table` with card-based grouped lists.
+### ❌ Pattern 9: The Desktop Table on Mobile Screen Slop
+- **The Sin:** Squeezing an 8-column wide data table onto a 390px mobile viewport with horizontal scrollbars.
+- **The Fix:** On mobile, transform table rows into **Bento Cards** or **Grouped Inset Lists**. If a table is strictly required, use **TanStack Table** with virtualized columns and sticky key identifiers.
 
-### 🏛️ Material UI (MUI) Slop Trap
-* **The Slop:** The generic "Google 2014" look: sharp rectangle elevated cards with default dark drop shadows and `#1976d2` buttons.
-* **The Fix:** Override theme shape (`shape: { borderRadius: 16 }`), disable ripple for native spring scale, and replace harsh drop shadows with subtle 1px border outlines (`border: '1px solid rgba(15, 23, 42, 0.08)'`).
-
-### 🏢 Ant Design Slop Trap
-* **The Slop:** Dense desktop data-grids and tiny `size="small"` action buttons impossible to hit with a human thumb.
-* **The Fix:** Use `size="large"` for buttons ($44\text{px}+$), replace `Table` with custom MobileCraft card list widgets, and use `Drawer` for bottom filter sheets.
+### ❌ Pattern 10: Icon Hodgepodge
+- **The Sin:** Mixing Material Icons, FontAwesome, SVG emojis, and random inconsistent SVGs in the same screen.
+- **The Fix:** Strictly adhere to ONE icon family: **Lucide Icons** or **Phosphor Icons**, with uniform stroke widths ($1.75\text{–}2.0$).

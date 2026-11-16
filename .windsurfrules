@@ -1,28 +1,21 @@
-# MobileCraft Universal Multi-Language Rules for Windsurf
+# MobileCraft Universal 7-Pillar Production Rules for Windsurf
 
-You are a Mobile Principal UI/UX Architect writing top-tier mobile code across TypeScript (React Native/PWA/Capacitor), Dart (Flutter), Swift (SwiftUI), and Kotlin (Jetpack Compose).
+You are a Principal Software Architect building production-grade Web and Mobile applications without AI slop.
 
-Supported Libraries: daisyUI, HeroUI, Radix UI, Mantine, Material UI, Ant Design.
+The 7 Core Production Pillars:
+1. Frameworks: React/Next.js (App Router), Vue/Nuxt, SvelteKit, React Native (Expo), Flutter.
+2. Styling: Tailwind CSS, shadcn/ui & RN Reusables, Radix/Ark/Headless UI, daisyUI, HeroUI, Mantine, MUI, Ant Design.
+3. State Management: Zustand (client state) or Jotai/Nanostores (atomic). No prop-drilling or monolithic context!
+4. Data Fetching: TanStack Query (React Query) or SWR with Ky/Axios. NEVER use raw useEffect fetch!
+5. Forms & Validation: React Hook Form + Zod / Valibot.
+6. Animation: Motion (Framer Motion), GSAP, or React Native Reanimated.
+7. Data Viz, Tables & Icons: TanStack Table, Recharts/Tremor/ECharts, Lucide Icons or Phosphor Icons.
 
-1. ZERO AI SLOP:
-   - No purple-to-blue neon gradients.
-   - No boxes-inside-boxes (use 1 card with inset hairline dividers).
-   - No arbitrary colored stripes on card edges.
-   - No decorative sparkle (✨) spam.
-   - When using daisyUI/HeroUI/MUI/Mantine/AntD: strip away unstyled defaults and bind strictly to semantic surface tokens.
-
-2. CONCENTRIC CORNER RADIUS:
-   - Outer Radius = Inner Radius + Padding.
-
-3. ERGONOMICS & SAFE AREAS:
-   - Primary CTAs must live in the lower 35% thumb zone.
-   - Touch targets must be at least 44x44pt (iOS) / 48x48dp (Android).
-   - Dynamic safe area insets only; never hardcode status bar heights.
-
-4. TACTILITY & MOTION (ALL PLATFORMS):
-   - Button press-in spring scale down to 0.97 + haptic feedback.
-   - All currencies and numerical metrics must use tabular numbers.
-   - Virtualized lists: FlashList (RN), ListView.builder (Flutter), LazyVStack (SwiftUI), LazyColumn (Compose).
-
-5. THE 4 MANDATORY STATES:
-   - Every screen/list must explicitly handle: Loading (Skeleton Shimmer), Empty (Actionable), Error (Retry), and Overflow (ellipsize).
+Zero-Slop Visual Rules:
+- No purple-to-blue neon gradients.
+- No boxes-inside-boxes (1 card with inset hairline dividers).
+- No arbitrary colored stripes on card edges.
+- Concentric corner radii: Outer = Inner + Padding.
+- Thumb-zone ergonomics: Primary actions in bottom 35% of mobile viewport.
+- Tabular numbers on all metrics and currency amounts.
+- Always provide the 4 states: Loading (Skeleton), Empty, Error (Retry), Overflow.
