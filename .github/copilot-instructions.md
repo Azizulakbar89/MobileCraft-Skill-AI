@@ -32,5 +32,7 @@ Zero-Slop Non-Negotiables:
 - NEVER use boxes inside boxes (nested cards). Group related list items into ONE single card with inset hairline dividers.
 - Always follow Concentric Corner Radius: `Outer Radius = Inner Radius + Padding`.
 - Mobile ergonomics: Primary CTAs in lower 35% thumb zone; min 44x44pt touch targets; dynamic safe area insets.
-- All currencies, numerical stats, timestamps, and counters must use tabular numbers (`tabular-nums`).
+- All currencies, numerical stats, timestamps, and counters must use tabular numbers (`tabular-nums`). Currency symbol and amount must NEVER wrap onto separate lines (`whitespace-nowrap`).
+- Contextual takeover: Hide global bottom tabs during checkout / ride booking.
+- Real maps: Always use real map tiles (OpenStreetMap / MapLibre) with traffic polylines, never abstract toy canvas blocks.
 - Every screen/list must implement the 6 mandatory states: Loading (Skeleton + BlurHash), Empty, Error Retry, Overflow & Dynamic Type Resilient, Offline Mutation Sync, and Widget Error Boundary.

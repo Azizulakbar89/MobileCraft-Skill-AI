@@ -103,6 +103,9 @@ Whenever you architect or code a frontend/mobile feature, you MUST select tools 
 6. **Geometry & Tokens (Pillar 2):** Strict concentric radius formula: `Outer Radius = Inner Radius + Padding`. All metrics must use `tabular-nums`.
 7. **Auth & Sessions (Pillar 8):** ALWAYS guard against concurrent 401s with a Singleton Refresh Mutex. NEVER store session tokens in unencrypted storage.
 8. **Crash Isolation (Pillar 12):** Wrap complex non-critical widgets in **WidgetErrorBoundary** so 1 chart failure never yields a blank white screen.
+9. **Contextual Screen Takeover (Pillar 10):** In active checkout, ride-selection, or multi-step payment flows, ALWAYS HIDE the global Bottom Navigation Bar to free up thumb-zone space.
+10. **Real-World Map Engines (Pillar 10):** NEVER draw abstract gray canvas blocks for live maps. Use real cartographic tile engines (OpenStreetMap / MapLibre / Leaflet) with traffic-coded polylines.
+11. **Micro-Typography Financial Hardening (Pillar 5 & 7):** Currency symbols (`Rp`) and amounts MUST NEVER wrap or split across lines. Always enforce `whitespace-nowrap`, `shrink-0`, and `tabular-nums`.
 
 ---
 
@@ -132,6 +135,7 @@ Before delivering code, mentally verify:
 - [09-a11y-i18n-observability.md](file:///Users/azizul/vps/mobilecraft-skill/.skills/mobile-frontend-craft/references/09-a11y-i18n-observability.md) — Dynamic Type 200% font resilience, APCA kontras, i18n timezone, dan Granular Error Boundaries.
 - [10-domain-archetypes-and-resources.md](file:///Users/azizul/vps/mobilecraft-skill/.skills/mobile-frontend-craft/references/10-domain-archetypes-and-resources.md) — Pola UI 5 industri kompleks (Fintech, E-Commerce, Maps, Chat, POS) & Direktori kurasi tools dunia.
 - [11-ecosystem-stack-matrix.md](file:///Users/azizul/vps/mobilecraft-skill/.skills/mobile-frontend-craft/references/11-ecosystem-stack-matrix.md) — Matriks 25+ domain ekosistem lengkap (Styling, Gorhom Sheet, MMKV, Midtrans/Stripe, Vision Camera, Solito).
+- [12-contextual-flows-and-map-engines.md](file:///Users/azizul/vps/mobilecraft-skill/.skills/mobile-frontend-craft/references/12-contextual-flows-and-map-engines.md) — Isolasi tab checkout, peta tile nyata, rute traffic, mikro-tipografi finansial anti-patah, dan 3-layer thumb-zone checkout stack.
 - [01-anti-slop-guardrails.md](file:///Users/azizul/vps/mobilecraft-skill/.skills/mobile-frontend-craft/references/01-anti-slop-guardrails.md) — Larangan pola visual & architectural slop.
 - [02-design-tokens-themes.md](file:///Users/azizul/vps/mobilecraft-skill/.skills/mobile-frontend-craft/references/02-design-tokens-themes.md) — Sistem grid, concentric radius, & pemetaan tema.
 - [03-component-blueprints.md](file:///Users/azizul/vps/mobilecraft-skill/.skills/mobile-frontend-craft/references/03-component-blueprints.md) — Blueprint form Zod, TanStack Query, Zustand, Inset List, Drawer.

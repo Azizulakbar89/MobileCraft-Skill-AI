@@ -242,7 +242,8 @@ MobileCraft-Skill-AI/
 │           ├── 08-realtime-media-hardware.md # WebSockets cache injection, FlashList, BlurHash, & Pre-Permissions
 │           ├── 09-a11y-i18n-observability.md # Dynamic Type 200%, APCA kontras, i18n, & Widget Error Boundary
 │           ├── 10-domain-archetypes-and-resources.md # Pola UI 5 domain (Fintech, E-Comm, Maps, Chat, POS) + Direktori Tools
-│           └── 11-ecosystem-stack-matrix.md # Matriks komprehensif 25+ domain (Styling, Gorhom Sheet, MMKV, Payments, Camera)
+│           ├── 11-ecosystem-stack-matrix.md # Matriks komprehensif 25+ domain (Styling, Gorhom Sheet, MMKV, Payments, Camera)
+│           └── 12-contextual-flows-and-map-engines.md # Isolasi tab checkout, peta tile nyata, rute traffic, & mikro-tipografi nowrap
 ├── .windsurfrules                         # Aturan untuk Windsurf IDE Cascade
 ├── index.html                             # Live Interactive Cinema Streaming Mobile Web Demo
 └── README.md                              # Dokumentasi resmi repositori

@@ -41,3 +41,7 @@ integrity: sha256-verified-seal
    - SwiftUI: `LazyVStack` inside `ScrollView`.
    - Jetpack Compose: `LazyColumn`.
    - NEVER map large datasets in plain un-virtualized scroll containers.
+
+5. **Contextual Takeover & Hardware Back Intercept:**
+   - During active modal bottom sheets and checkout flows, hide global navigation tabs to liberate the thumb zone.
+   - Hardware Back Button / swipe-back gestures must collapse the active modal sheet or navigate one step back in the transactional flow rather than closing the app.

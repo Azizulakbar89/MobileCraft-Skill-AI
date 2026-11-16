@@ -35,6 +35,7 @@ shasum -a 256 \
   .skills/mobile-frontend-craft/references/09-a11y-i18n-observability.md \
   .skills/mobile-frontend-craft/references/10-domain-archetypes-and-resources.md \
   .skills/mobile-frontend-craft/references/11-ecosystem-stack-matrix.md \
+  .skills/mobile-frontend-craft/references/12-contextual-flows-and-map-engines.md \
   scripts/verify-integrity.sh \
   > "$CHECKSUM_FILE"
 

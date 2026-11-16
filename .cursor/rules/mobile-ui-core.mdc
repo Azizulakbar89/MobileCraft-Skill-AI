@@ -41,12 +41,16 @@ When creating or modifying frontend and mobile components:
    - NEVER place decorative colored vertical stripes on the edge of cards.
    - NEVER build "boxes inside boxes". Use a single surface card with inset dividers.
    - Do NOT use decorative starbursts (`✨`) or arbitrary "AI-powered" tags.
+   - NEVER leave the global Bottom Navigation Bar visible during checkout/ride-ordering flows. Hide tabs to clear the thumb zone.
+   - NEVER render toy gray-box canvases for live maps; use real tile cartography (OpenStreetMap / MapLibre) with traffic polylines.
 
 3. **Concentric Corner Radius Formula:**
    - `Outer Radius = Inner Radius + Padding`. Ensure optical harmony across all nested containers.
 
-4. **Typography & Tabular Figures:**
+4. **Typography & Financial Hardening:**
    - All currencies, metrics, timestamps, and counters MUST use tabular numbers (`tabular-nums`, `FontFeature.tabularFigures()`, `.monospacedDigit()`).
+   - Currency symbols (`Rp`) and values MUST NEVER wrap onto separate lines. Always enforce `whitespace-nowrap` and `shrink-0`.
+   - Checkout flows MUST follow the 3-Layer Stack: (1) Route/Cart Summary, (2) Payment & Promo Selector Bar, (3) Sticky CTA.
 
 5. **Mandatory 6 States (Enterprise Standard):**
    - Every screen/module must implement: Loading (Skeleton + BlurHash), Empty (Actionable), Error (Non-destructive Retry), Overflow & Dynamic Type Resilient, Offline Mutation Sync Banner, dan Widget Error Boundary.

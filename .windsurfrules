@@ -33,5 +33,7 @@ Zero-Slop Visual Rules:
 - No arbitrary colored stripes on card edges.
 - Concentric corner radii: Outer = Inner + Padding.
 - Thumb-zone ergonomics: Primary actions in bottom 35% of mobile viewport.
-- Tabular numbers on all metrics and currency amounts.
+- Tabular numbers on all metrics and currency amounts (Rp and amount must NEVER wrap onto separate lines).
+- Contextual takeover: Hide global bottom tabs during checkout / ride booking.
+- Always use real map tiles (OpenStreetMap / MapLibre) instead of abstract gray box canvas.
 - Always provide the 6 states: Loading (Skeleton + BlurHash), Empty, Error (Retry), Overflow & Dynamic Type Resilient, Offline Mutation Sync, Widget Error Boundary.
