@@ -11,20 +11,6 @@
 
 ---
 
-## 🌐 Live Interactive Demo (Hasil Nyata Skill)
-
-Anda dapat langsung mencoba hasil nyata dari skill ini secara interaktif melalui browser (file HTML sudah disertakan lengkap di dalam repo):
-
-* 📱 **[Buka Live Mobile App Simulator](https://azizulakbar89.github.io/MobileCraft-Skill-AI/)** (File: [`index.html`](index.html))  
-  *Simulasi interaktif aplikasi mobile nyata dengan 5 layar lengkap: Dompet Digital, Habit Tracker dengan progress ring dinamis, E-Commerce dengan variant selector, Wisata/Booking dengan search pill, dan Asisten AI dengan input sadar keyboard.*
-* 🔍 **[Buka Benchmark & Audit Inspector](https://azizulakbar89.github.io/MobileCraft-Skill-AI/demo/benchmark.html)** (File: [`demo/benchmark.html`](demo/benchmark.html))  
-  *Panel pengujian kepatuhan 8-poin audit anti-slop, inspeksi blueprint kode, dan verifikasi zero-slop.*
-
-> 💡 **Cara mengaktifkan demo online di GitHub:**  
-> Masuk ke repositori GitHub Anda $\rightarrow$ **Settings** $\rightarrow$ **Pages** $\rightarrow$ Pada bagian **Branch**, pilih `main` dan folder `/(root)`, lalu klik **Save**. Website demo Anda akan langsung aktif secara publik!
-
----
-
 ## ⚡ The Problem: What is "Mobile AI Slop"?
 
 Standard LLMs are trained mostly on desktop web landing pages. When asked to write mobile code, they default to:
