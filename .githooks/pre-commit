@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Git pre-commit hook to verify integrity and author watermark
+./scripts/verify-integrity.sh

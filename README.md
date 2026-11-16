@@ -1,3 +1,15 @@
+<!-- 
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║                🔐 CRYPTOGRAPHIC PROVENANCE & AUTHENTICITY SEAL                       ║
+║  Author & Creator : Ananda Azizul Akbar (@Azizulakbar89)                            ║
+║  Repository       : https://github.com/Azizulakbar89/MobileCraft-Skill-AI            ║
+║  License          : MIT with Cryptographic Provenance Attribution Requirement        ║
+║  Integrity Guard  : SHA-256 Manifest Verified • Anti-Tamper Protected                ║
+║  Notice           : Removal of this signature, unauthorized stripping, or alteration ║
+║                     of author provenance invalidates cryptographic integrity status.  ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+-->
+
 <p align="center">
   <h1 align="center">⚡ MobileCraft AI</h1>
   <p align="center">
@@ -7,18 +19,25 @@
   <p align="center">
     <a href="https://azizulakbar89.github.io/MobileCraft-Skill-AI/"><img src="https://img.shields.io/badge/Live_Demo-Aura_Cinema-E50914?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Live Demo"></a>
     <a href="https://github.com/Azizulakbar89/MobileCraft-Skill-AI/stargazers"><img src="https://img.shields.io/github/stars/Azizulakbar89/MobileCraft-Skill-AI?style=for-the-badge&color=amber&logo=github" alt="Stars"></a>
+    <img src="https://img.shields.io/badge/Cryptographic-SHA--256%20Verified-success?style=for-the-badge&logo=security" alt="Cryptographic Seal">
     <img src="https://img.shields.io/badge/Status-Production--Ready-emerald?style=for-the-badge" alt="Status">
     <img src="https://img.shields.io/badge/Platforms-iOS%20%7C%20Android%20%7C%20Web%20%7C%20Hybrid-blueviolet?style=for-the-badge" alt="Platforms">
-    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License">
+    <img src="https://img.shields.io/badge/Author-Ananda%20Azizul%20Akbar-1E293B?style=for-the-badge&logo=github" alt="Author">
   </p>
   <p align="center">
     <a href="#-live-interactive-demo">🎬 Live Demo</a> •
     <a href="#-daftar-teknologi--stack-yang-ditawarkan-7-pilar">🏛️ Tech Stack (7 Pilar)</a> •
     <a href="#-kompatibilitas-bahasa-pemrograman">💻 Kompatibilitas Bahasa</a> •
     <a href="#-cara-pemasangan-installation-guide">🚀 Cara Pasang</a> •
+    <a href="#-verifikasi-integritas-kriptografis">🔐 Verifikasi Kriptografi</a> •
     <a href="#-benchmark-ai-slop-vs-mobilecraft">⚡ Benchmark</a>
   </p>
 </p>
+
+> [!IMPORTANT]
+> **🔐 Segel Keaslian & Integritas Kriptografis (Cryptographic Provenance)**  
+> Skill & Rules Pack ini dirancang dan dimiliki secara sah oleh **Ananda Azizul Akbar ([@Azizulakbar89](https://github.com/Azizulakbar89))**.  
+> Seluruh berkas dilindungi oleh *SHA-256 Cryptographic Manifest* (`checksums.sha256`). Modifikasi tanpa izin, penghapusan atribusi, atau re-upload ilegal dapat dideteksi secara otomatis melalui skrip verifikasi integritas: `./scripts/verify-integrity.sh`.
 
 ---
 
@@ -223,6 +242,20 @@ MobileCraft-Skill-AI/
 ├── index.html                             # Live Interactive Cinema Streaming Mobile Web Demo
 └── README.md                              # Dokumentasi resmi repositori
 ```
+
+---
+
+## 🔐 Verifikasi Integritas Kriptografis & Anti-Tamper
+
+Repositori ini dilengkapi segel kriptografis (*Cryptographic Hash Manifest*) untuk menjamin keaslian berkas dan mencegah modifikasi tidak sah atau penghapusan identitas pembuat:
+
+```bash
+# Jalankan verifikasi integritas berkas di mesin lokal Anda:
+chmod +x ./scripts/verify-integrity.sh
+./scripts/verify-integrity.sh
+```
+
+Jika ada pihak yang mengubah atau memodifikasi aturan inti tanpa izin, verifikasi kriptografis akan otomatis mendeteksi perbedaan hash (*integrity mismatch*) dan membatalkan status keaslian.
 
 ---
 
