@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Aura Cinema — Zero-Slop Mobile Streaming</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap');
+    
+    * {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      background-color: #040507;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Strict Mobile Viewport Box (Never Stretches on Desktop) */
+    #mobile-app-root {
+      width: 100% !important;
+      max-width: 430px !important;
+      height: 100dvh !important;
+      background-color: #080A0E !important;
+      position: relative !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      color: #F8FAFC !important;
+    }
+
+    /* On Desktop screens, wrap in phone frame that ALWAYS fits the viewport */
+    @media (min-width: 640px) {
+      body {
+        padding: 16px 0;
+      }
+      #mobile-app-root {
+        height: min(870px, calc(100vh - 32px)) !important;
+        border-radius: 46px !important;
+        box-shadow: 0 30px 100px -20px rgba(0, 0, 0, 0.95), 0 0 0 10px #161A22 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Tactile Spring Press Physics */
+    .tactile {
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.1s ease;
+    }
+    .tactile:active {
+      transform: scale(0.96);
+      opacity: 0.88;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .sheet-backdrop {
+      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sheet-content {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PURE MOBILE APPLICATION CONTAINER (STRICTLY CONSTRAINED TO 430PX) -->
+  <div id="mobile-app-root">
+    
+    <!-- Top Native Status Bar (Safe Area Top) -->
+    <header class="pt-3 px-6 pb-2 flex justify-between items-center text-xs font-bold text-white bg-transparent z-40 shrink-0 select-none absolute top-0 left-0 right-0">
+      <span id="current-time" class="tracking-tight font-black text-sm tabular-nums">09:41</span>
+      
+      <!-- Dynamic Island Capsule -->
+      <div class="w-28 h-6 bg-black rounded-full flex items-center justify-between px-2.5 shadow-md border border-white/5">
+        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+        <div class="flex items-center gap-1">
+          <span class="w-1 h-2 bg-red-500 rounded-full animate-bounce"></span>
+          <span class="w-1 h-3 bg-red-400 rounded-full animate-bounce delay-75"></span>
+          <span class="w-1 h-1.5 bg-red-600 rounded-full animate-bounce delay-150"></span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5 text-xs font-bold text-white">
+        <span class="text-[11px] font-extrabold tracking-wide">5G</span>
+        <div class="w-6 h-3 border border-white/80 rounded-[3px] p-0.5 flex items-center">
+          <div class="w-full h-full bg-white rounded-[1px]"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Screen Content Container -->
+    <main class="flex-1 overflow-y-auto hide-scrollbar relative pb-28" id="app-viewport">
+      
+      <!-- SCREEN 1: CINEMA HOME -->
+      <section id="view-home" class="space-y-6">
+        
+        <!-- Hero Cinematic Banner -->
+        <div class="relative w-full h-[450px] overflow-hidden">
+          <img id="hero-banner-img" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=85" alt="Dune 2" class="w-full h-full object-cover" />
+          
+          <!-- Smooth Vignette Gradient Fade into Dark Canvas -->
+          <div class="absolute inset-0 bg-gradient-to-t from-[#080A0E] via-[#080A0E]/60 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-black/75 via-transparent to-transparent h-24"></div>
+
+          <!-- Hero Content (Within Lower Thumb Reach) -->
+          <div class="absolute bottom-3 left-0 right-0 px-6 text-center flex flex-col items-center">
+            <span class="px-3 py-1 bg-red-600/95 text-white text-[10px] font-black tracking-widest uppercase rounded-md shadow-lg border border-red-500/30">
+              PREMIERE EKSKLUSIF
+            </span>
+            <h1 class="text-3xl font-black text-white mt-2 tracking-tight drop-shadow-md">
+              Dune: Part Two
+            </h1>
+            <div class="flex items-center justify-center gap-2 text-xs font-semibold text-slate-300 mt-1.5">
+              <span class="tabular-nums font-bold text-white">2024</span>
+              <span>•</span>
+              <span>Sci-Fi, Petualangan</span>
+              <span>•</span>
+              <span class="tabular-nums font-bold text-white">2j 46m</span>
+              <span>•</span>
+              <span class="text-amber-400 font-bold flex items-center gap-0.5">★ 8.9</span>
+            </div>
+
+            <!-- Two Generous Tactile Buttons (Thumb Reach) -->
+            <div class="grid grid-cols-2 gap-3 w-full mt-4">
+              <button onclick="openMovieDetail('Dune: Part Two', 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80', 'Sci-Fi • Petualangan', '8.9', '2j 46m', 'Paul Atreides bersatu dengan Chani dan suku Fremen untuk membalas dendam terhadap para konspirator yang telah menghancurkan keluarganya, menghadapi pilihan antara cinta sejati dan nasib seluruh alam semesta.')" class="tactile h-12 bg-white text-black font-extrabold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-lg">
+                <svg class="w-5 h-5 fill-black" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                Tonton Film
+              </button>
+              <button onclick="toggleWatchlist(this)" class="tactile h-12 bg-[#1A1F2B] text-white font-bold text-sm rounded-2xl flex items-center justify-center gap-2 border border-white/10 shadow-md">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
+                <span class="watchlist-btn-text">Daftar Saya</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Filter Pills (Horizontal Scroll) -->
+        <div class="px-5">
+          <div class="flex gap-2.5 overflow-x-auto hide-scrollbar py-1">
+            <button onclick="switchCategory(this)" class="cat-pill tactile px-4 py-2 rounded-full bg-white text-black text-xs font-extrabold whitespace-nowrap shadow-xs">Semua Film</button>
+            <button onclick="switchCategory(this)" class="cat-pill tactile px-4 py-2 rounded-full bg-[#121620] text-slate-400 border border-white/10 text-xs font-bold whitespace-nowrap hover:text-white">Tren Sekarang</button>
+            <button onclick="switchCategory(this)" class="cat-pill tactile px-4 py-2 rounded-full bg-[#121620] text-slate-400 border border-white/10 text-xs font-bold whitespace-nowrap hover:text-white">Box Office</button>
+            <button onclick="switchCategory(this)" class="cat-pill tactile px-4 py-2 rounded-full bg-[#121620] text-slate-400 border border-white/10 text-xs font-bold whitespace-nowrap hover:text-white">Sci-Fi</button>
+            <button onclick="switchCategory(this)" class="cat-pill tactile px-4 py-2 rounded-full bg-[#121620] text-slate-400 border border-white/10 text-xs font-bold whitespace-nowrap hover:text-white">Anime</button>
+            <button onclick="switchCategory(this)" class="cat-pill tactile px-4 py-2 rounded-full bg-[#121620] text-slate-400 border border-white/10 text-xs font-bold whitespace-nowrap hover:text-white">Serial TV</button>
+          </div>
+        </div>
+
+        <!-- Section: Lanjutkan Menonton (Continue Watching with Progress) -->
+        <div class="px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-extrabold text-white tracking-tight">Lanjutkan Menonton</h2>
+            <span class="text-xs font-bold text-red-500">Kelola</span>
+          </div>
+
+          <div class="flex gap-3.5 overflow-x-auto hide-scrollbar py-1">
+            
+            <!-- Movie 1 -->
+            <div onclick="openMovieDetail('Oppenheimer', 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&w=800&q=80', 'Biografi • Drama • Sejarah', '8.9', '3j 00m', 'Kisah ilmuwan fisika J. Robert Oppenheimer dalam memimpin Proyek Manhattan untuk menciptakan senjata nuklir pertama di dunia selama Perang Dunia II.')" class="tactile w-56 shrink-0 bg-[#121620] rounded-[22px] overflow-hidden border border-white/10 shadow-md cursor-pointer">
+              <div class="relative h-32 w-full">
+                <img src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&q=80" alt="Oppenheimer" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-black/35 flex items-center justify-center">
+                  <div class="w-10 h-10 rounded-full bg-black/60 border border-white/30 backdrop-blur-xs flex items-center justify-center shadow-lg">
+                    <svg class="w-5 h-5 fill-white ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <!-- Inset Progress Bar -->
+              <div class="w-full bg-[#1C202A] h-1.5 overflow-hidden">
+                <div class="bg-red-600 h-full w-[65%]"></div>
+              </div>
+              <div class="p-3 flex items-center justify-between">
+                <div>
+                  <h3 class="text-xs font-bold text-white truncate w-36">Oppenheimer</h3>
+                  <p class="text-[10px] text-slate-400 mt-0.5">Sisa 42 mnt • 65%</p>
+                </div>
+                <svg class="w-4 h-4 text-slate-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+              </div>
+            </div>
+
+            <!-- Movie 2 -->
+            <div onclick="openMovieDetail('Cyberpunk: Edgerunners', 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80', 'Animasi • Aksi • Cyberpunk', '8.8', '10 Episode', 'Seorang anak jalanan yang mencoba bertahan hidup di kota distopia masa depan yang terobsesi dengan modifikasi tubuh berteknologi tinggi.')" class="tactile w-56 shrink-0 bg-[#121620] rounded-[22px] overflow-hidden border border-white/10 shadow-md cursor-pointer">
+              <div class="relative h-32 w-full">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="Cyberpunk" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-black/35 flex items-center justify-center">
+                  <div class="w-10 h-10 rounded-full bg-black/60 border border-white/30 backdrop-blur-xs flex items-center justify-center shadow-lg">
+                    <svg class="w-5 h-5 fill-white ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full bg-[#1C202A] h-1.5 overflow-hidden">
+                <div class="bg-red-600 h-full w-[35%]"></div>
+              </div>
+              <div class="p-3 flex items-center justify-between">
+                <div>
+                  <h3 class="text-xs font-bold text-white truncate w-36">Cyberpunk: Edgerunners</h3>
+                  <p class="text-[10px] text-slate-400 mt-0.5">Episode 4 • Sisa 18 mnt</p>
+                </div>
+                <svg class="w-4 h-4 text-slate-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section: Populer Minggu Ini (Poster Carousel) -->
+        <div class="px-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-extrabold text-white tracking-tight">Populer Minggu Ini</h2>
+            <span class="text-xs font-bold text-slate-400">Lihat Semua</span>
+          </div>
+
+          <div class="flex gap-3.5 overflow-x-auto hide-scrollbar py-1">
+            
+            <!-- Poster 1 -->
+            <div onclick="openMovieDetail('Interstellar', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80', 'Sci-Fi • Petualangan Luar Angkasa', '8.7', '2j 49m', 'Ketika bumi menjadi tidak layak huni, sekelompok penjelajah melintasi lubang cacing galaksi untuk menemukan tempat tinggal baru bagi umat manusia.')" class="tactile w-36 shrink-0 cursor-pointer">
+              <div class="relative h-52 w-full rounded-2xl overflow-hidden border border-white/10 shadow-md">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=500&q=80" alt="Interstellar" class="w-full h-full object-cover" />
+                <span class="absolute top-2.5 right-2.5 px-2 py-0.5 bg-black/75 rounded-md text-[10px] font-bold text-amber-400 border border-white/10 backdrop-blur-xs">
+                  ★ 8.7
+                </span>
+              </div>
+              <h3 class="text-xs font-bold text-white mt-2 truncate">Interstellar</h3>
+              <p class="text-[10px] text-slate-400">Sci-Fi • 4K HDR</p>
+            </div>
+
+            <!-- Poster 2 -->
+            <div onclick="openMovieDetail('Blade Runner 2049', 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80', 'Sci-Fi • Misteri • Noir', '8.0', '2j 44m', 'Seorang blade runner muda menemukan rahasia yang telah lama terkubur yang berpotensi menjerumuskan masyarakat ke dalam kekacauan.')" class="tactile w-36 shrink-0 cursor-pointer">
+              <div class="relative h-52 w-full rounded-2xl overflow-hidden border border-white/10 shadow-md">
+                <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=500&q=80" alt="Blade Runner" class="w-full h-full object-cover" />
+                <span class="absolute top-2.5 right-2.5 px-2 py-0.5 bg-black/75 rounded-md text-[10px] font-bold text-amber-400 border border-white/10 backdrop-blur-xs">
+                  ★ 8.0
+                </span>
+              </div>
+              <h3 class="text-xs font-bold text-white mt-2 truncate">Blade Runner 2049</h3>
+              <p class="text-[10px] text-slate-400">Sci-Fi • Dolby</p>
+            </div>
+
+            <!-- Poster 3 -->
+            <div onclick="openMovieDetail('Spider-Man: Across the Spider-Verse', 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80', 'Animasi • Aksi • Multiverse', '8.7', '2j 20m', 'Miles Morales terlempar melintasi Multiverse, di mana ia bertemu dengan tim Spider-People yang bertugas melindungi keberadaannya.')" class="tactile w-36 shrink-0 cursor-pointer">
+              <div class="relative h-52 w-full rounded-2xl overflow-hidden border border-white/10 shadow-md">
+                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=500&q=80" alt="Spider-Verse" class="w-full h-full object-cover" />
+                <span class="absolute top-2.5 right-2.5 px-2 py-0.5 bg-black/75 rounded-md text-[10px] font-bold text-amber-400 border border-white/10 backdrop-blur-xs">
+                  ★ 8.7
+                </span>
+              </div>
+              <h3 class="text-xs font-bold text-white mt-2 truncate">Spider-Verse</h3>
+              <p class="text-[10px] text-slate-400">Animasi • 4K HDR</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section: Top 10 Pilihan Hari Ini (Grouped Inset Rows) -->
+        <div class="px-5 space-y-3">
+          <h2 class="text-base font-extrabold text-white tracking-tight">Top Pilihan Hari Ini</h2>
+          
+          <div class="bg-[#121620] rounded-[26px] border border-white/10 overflow-hidden shadow-sm divide-y divide-white/5">
+            
+            <!-- Row 1 -->
+            <div onclick="openMovieDetail('Dune: Part Two', 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80', 'Sci-Fi • Petualangan', '8.9', '2j 46m', 'Paul Atreides membalas dendam terhadap para konspirator kekaisaran.')" class="p-4 flex items-center justify-between hover:bg-white/5 cursor-pointer tactile">
+              <div class="flex items-center gap-3.5">
+                <span class="text-2xl font-black text-white w-5 tabular-nums">1</span>
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=160&q=80" alt="Dune 2" class="w-12 h-16 rounded-xl object-cover shadow-sm" />
+                <div>
+                  <h3 class="text-sm font-bold text-white">Dune: Part Two</h3>
+                  <p class="text-xs text-slate-400 mt-0.5">Sci-Fi • 2j 46m</p>
+                  <div class="flex items-center gap-1 mt-1 text-xs text-amber-400 font-bold">
+                    <span>★ 8.9</span>
+                    <span class="text-slate-500 font-normal ml-1">4K Ultra HD</span>
+                  </div>
+                </div>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-[#1C202A] flex items-center justify-center text-white shrink-0">
+                <svg class="w-5 h-5 fill-white ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div onclick="openMovieDetail('Oppenheimer', 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&w=800&q=80', 'Biografi • Drama • Sejarah', '8.9', '3j 00m', 'Kisah penciptaan bom atom pertama dalam sejarah.')" class="p-4 flex items-center justify-between hover:bg-white/5 cursor-pointer tactile">
+              <div class="flex items-center gap-3.5">
+                <span class="text-2xl font-black text-white w-5 tabular-nums">2</span>
+                <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&w=160&q=80" alt="Oppenheimer" class="w-12 h-16 rounded-xl object-cover shadow-sm" />
+                <div>
+                  <h3 class="text-sm font-bold text-white">Oppenheimer</h3>
+                  <p class="text-xs text-slate-400 mt-0.5">Biografi • 3j 00m</p>
+                  <div class="flex items-center gap-1 mt-1 text-xs text-amber-400 font-bold">
+                    <span>★ 8.9</span>
+                    <span class="text-slate-500 font-normal ml-1">Dolby Vision</span>
+                  </div>
+                </div>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-[#1C202A] flex items-center justify-center text-white shrink-0">
+                <svg class="w-5 h-5 fill-white ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div onclick="openMovieDetail('Cyberpunk: Edgerunners', 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80', 'Animasi • Aksi', '8.8', '10 Episode', 'Petualangan aksi di kota distopia Night City.')" class="p-4 flex items-center justify-between hover:bg-white/5 cursor-pointer tactile">
+              <div class="flex items-center gap-3.5">
+                <span class="text-2xl font-black text-white w-5 tabular-nums">3</span>
+                <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=160&q=80" alt="Cyberpunk" class="w-12 h-16 rounded-xl object-cover shadow-sm" />
+                <div>
+                  <h3 class="text-sm font-bold text-white">Cyberpunk: Edgerunners</h3>
+                  <p class="text-xs text-slate-400 mt-0.5">Animasi • 10 Episode</p>
+                  <div class="flex items-center gap-1 mt-1 text-xs text-amber-400 font-bold">
+                    <span>★ 8.8</span>
+                    <span class="text-slate-500 font-normal ml-1">HDR10</span>
+                  </div>
+                </div>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-[#1C202A] flex items-center justify-center text-white shrink-0">
+                <svg class="w-5 h-5 fill-white ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SCREEN 2: JELAJAH (SEARCH & GENRES) -->
+      <section id="view-explore" class="hidden px-5 pt-16 space-y-5">
+        <h1 class="text-2xl font-black text-white tracking-tight">Jelajah Film</h1>
+        
+        <!-- Search Input -->
+        <div class="relative">
+          <input type="text" placeholder="Cari judul film, sutradara, aktor..." class="w-full h-12 bg-[#121620] border border-white/10 rounded-2xl pl-11 pr-4 text-xs font-semibold text-white placeholder-slate-400 focus:outline-none focus:border-red-500" />
+          <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Kategori Pilihan</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="h-24 rounded-2xl bg-gradient-to-br from-red-600 to-amber-700 p-3.5 flex flex-col justify-between font-black text-white shadow-md tactile cursor-pointer">
+              <span class="text-sm">Aksi & Adrenalin</span>
+              <span class="text-[10px] font-semibold text-white/80">142 Film</span>
+            </div>
+            <div class="h-24 rounded-2xl bg-gradient-to-br from-indigo-700 to-purple-800 p-3.5 flex flex-col justify-between font-black text-white shadow-md tactile cursor-pointer">
+              <span class="text-sm">Sci-Fi & Semesta</span>
+              <span class="text-[10px] font-semibold text-white/80">98 Film</span>
+            </div>
+            <div class="h-24 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-800 p-3.5 flex flex-col justify-between font-black text-white shadow-md tactile cursor-pointer">
+              <span class="text-sm">Dokumenter Alam</span>
+              <span class="text-[10px] font-semibold text-white/80">64 Film</span>
+            </div>
+            <div class="h-24 rounded-2xl bg-gradient-to-br from-rose-700 to-pink-800 p-3.5 flex flex-col justify-between font-black text-white shadow-md tactile cursor-pointer">
+              <span class="text-sm">Drama & Romansa</span>
+              <span class="text-[10px] font-semibold text-white/80">112 Film</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: DAFTAR SAYA (WATCHLIST) -->
+      <section id="view-saved" class="hidden px-5 pt-16 space-y-4">
+        <div class="flex items-center justify-between">
+          <h1 class="text-2xl font-black text-white tracking-tight">Daftar Tontonan</h1>
+          <span class="text-xs font-bold text-slate-400 tabular-nums">4 Film Tersimpan</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3.5 pt-2">
+          <div onclick="openMovieDetail('Dune: Part Two', 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80', 'Sci-Fi • Petualangan', '8.9', '2j 46m', 'Paul Atreides membalas dendam terhadap konspirator kekaisaran.')" class="tactile cursor-pointer">
+            <div class="relative h-52 w-full rounded-2xl overflow-hidden border border-white/10 shadow-md">
+              <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80" alt="Dune" class="w-full h-full object-cover" />
+              <span class="absolute top-2 right-2 px-1.5 py-0.5 bg-red-600 text-white rounded text-[9px] font-black">4K</span>
+            </div>
+            <h4 class="text-xs font-bold text-white mt-1.5 truncate">Dune: Part Two</h4>
+            <p class="text-[10px] text-slate-400">2j 46m • ★ 8.9</p>
+          </div>
+
+          <div onclick="openMovieDetail('Interstellar', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80', 'Sci-Fi • Luar Angkasa', '8.7', '2j 49m', 'Perjalanan melintasi lubang cacing untuk masa depan manusia.')" class="tactile cursor-pointer">
+            <div class="relative h-52 w-full rounded-2xl overflow-hidden border border-white/10 shadow-md">
+              <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=500&q=80" alt="Interstellar" class="w-full h-full object-cover" />
+              <span class="absolute top-2 right-2 px-1.5 py-0.5 bg-red-600 text-white rounded text-[9px] font-black">4K</span>
+            </div>
+            <h4 class="text-xs font-bold text-white mt-1.5 truncate">Interstellar</h4>
+            <p class="text-[10px] text-slate-400">2j 49m • ★ 8.7</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: PROFIL PENGGUNA -->
+      <section id="view-profile" class="hidden px-5 pt-16 space-y-5">
+        <div class="flex items-center gap-4 p-4 bg-[#121620] rounded-2xl border border-white/10 shadow-sm">
+          <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center font-black text-xl text-white shadow-md">
+            AZ
+          </div>
+          <div>
+            <h2 class="text-base font-extrabold text-white">Azizul Akbar</h2>
+            <p class="text-xs text-red-400 font-semibold mt-0.5">VIP Cinephile • Berlangganan Aktif</p>
+          </div>
+        </div>
+
+        <div class="bg-[#121620] rounded-2xl border border-white/10 divide-y divide-white/5 text-sm">
+          <div class="p-4 flex justify-between items-center text-slate-200">
+            <span>Kualitas Streaming</span>
+            <span class="text-xs font-bold text-red-400">4K Ultra HD (Maksimal)</span>
+          </div>
+          <div class="p-4 flex justify-between items-center text-slate-200">
+            <span>Format Audio</span>
+            <span class="text-xs font-bold text-slate-400">Dolby Atmos / 5.1</span>
+          </div>
+          <div class="p-4 flex justify-between items-center text-slate-200">
+            <span>Penyimpanan Unduhan</span>
+            <span class="text-xs font-bold text-slate-400">24.8 GB Tersedia</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- MOVIE DETAIL BOTTOM SHEET (LOCKED INSIDE 430PX MOBILE FRAME) -->
+    <div id="movie-detail-sheet" class="absolute inset-0 z-50 pointer-events-none flex flex-col justify-end overflow-hidden">
+      <!-- Dimmed Backdrop -->
+      <div id="detail-backdrop" onclick="closeMovieDetail()" class="sheet-backdrop absolute inset-0 bg-black/80 opacity-0 pointer-events-none"></div>
+      
+      <!-- Drawer Panel -->
+      <div id="detail-panel" class="sheet-content relative bg-[#121620] rounded-t-[34px] p-6 shadow-2xl translate-y-full pointer-events-auto border-t border-white/15 max-h-[85%] overflow-y-auto hide-scrollbar">
+        <div class="w-12 h-1.5 bg-slate-600 rounded-full mx-auto mb-5"></div>
+        
+        <div class="flex gap-4">
+          <img id="modal-poster" src="" class="w-24 h-36 rounded-2xl object-cover border border-white/10 shadow-lg shrink-0" />
+          <div class="space-y-1.5">
+            <h2 id="modal-title" class="text-xl font-black text-white leading-tight"></h2>
+            <p id="modal-genre" class="text-xs text-slate-400"></p>
+            <div class="flex items-center gap-2 pt-1">
+              <span class="px-2 py-0.5 rounded-md bg-[#1C202A] text-white font-bold text-[10px] border border-white/10">4K Ultra HD</span>
+              <span class="px-2 py-0.5 rounded-md bg-[#1C202A] text-white font-bold text-[10px] border border-white/10">Dolby Atmos</span>
+            </div>
+            <div class="flex items-center gap-1.5 pt-1 text-xs font-bold text-amber-400">
+              <span id="modal-rating"></span>
+              <span class="text-slate-500 font-normal ml-1">•</span>
+              <span id="modal-duration" class="text-slate-300 font-normal"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 space-y-2">
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Sinopsis Film</h4>
+          <p id="modal-synopsis" class="text-xs text-slate-300 leading-relaxed"></p>
+        </div>
+
+        <!-- Big Play Button -->
+        <div class="mt-6 space-y-2.5">
+          <button onclick="playMovieVideo()" class="tactile w-full h-12 bg-white text-black rounded-2xl font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg">
+            <svg class="w-5 h-5 fill-black" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            Mulai Menonton Sekarang
+          </button>
+          <button onclick="closeMovieDetail()" class="tactile w-full h-11 bg-[#1A1F2B] text-slate-300 rounded-2xl font-bold text-xs flex items-center justify-center border border-white/10">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NATIVE FLOATING THUMB NAVIGATION BAR (Clean 84px Height, Prominent 28px Icons, Safe Spacing) -->
+    <nav class="absolute bottom-0 left-0 right-0 h-[84px] bg-[#080A0E]/95 backdrop-blur-md border-t border-white/10 px-6 flex items-start justify-around pt-2.5 pb-6 z-40 select-none">
+      <button onclick="switchTab('home')" class="nav-btn tactile flex flex-col items-center gap-1 text-white font-extrabold" data-tab="home">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span class="text-[11px] tracking-tight">Beranda</span>
+      </button>
+
+      <button onclick="switchTab('explore')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-500 hover:text-white font-semibold" data-tab="explore">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <span class="text-[11px] tracking-tight">Jelajah</span>
+      </button>
+
+      <button onclick="switchTab('saved')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-500 hover:text-white font-semibold relative" data-tab="saved">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+        <span class="text-[11px] tracking-tight">Disimpan</span>
+      </button>
+
+      <button onclick="switchTab('profile')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-500 hover:text-white font-semibold" data-tab="profile">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        <span class="text-[11px] tracking-tight">Profil</span>
+      </button>
+    </nav>
+
+    <!-- Safe Home Indicator Bar (Non-Overlapping, Clean 6px from Bottom) -->
+    <div class="absolute bottom-1.5 left-0 right-0 flex justify-center pointer-events-none select-none z-50">
+      <div class="w-32 h-1 bg-white/25 rounded-full"></div>
+    </div>
+  </div>
+
+  <script>
+    // Tab Navigation
+    function switchTab(tabKey) {
+      const views = ['home', 'explore', 'saved', 'profile'];
+      views.forEach(v => {
+        const el = document.getElementById('view-' + v);
+        if (el) el.classList.add('hidden');
+      });
+
+      const targetView = document.getElementById('view-' + tabKey);
+      if (targetView) targetView.classList.remove('hidden');
+
+      // Update Nav Buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabKey) {
+          btn.className = 'nav-btn tactile flex flex-col items-center gap-1 text-white font-extrabold';
+        } else {
+          btn.className = 'nav-btn tactile flex flex-col items-center gap-1 text-slate-500 hover:text-white font-semibold';
+        }
+      });
+
+      document.getElementById('app-viewport').scrollTop = 0;
+    }
+
+    // Category Pill Switcher
+    function switchCategory(btn) {
+      document.querySelectorAll('.cat-pill').forEach(b => {
+        b.className = 'cat-pill tactile px-4 py-2 rounded-full bg-[#121620] text-slate-400 border border-white/10 text-xs font-bold whitespace-nowrap hover:text-white';
+      });
+      btn.className = 'cat-pill tactile px-4 py-2 rounded-full bg-white text-black text-xs font-extrabold whitespace-nowrap shadow-xs';
+    }
+
+    // Modal Movie Detail
+    function openMovieDetail(title, poster, genre, rating, duration, synopsis) {
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-poster').src = poster;
+      document.getElementById('modal-genre').innerText = genre;
+      document.getElementById('modal-rating').innerText = '★ ' + rating;
+      document.getElementById('modal-duration').innerText = duration;
+      document.getElementById('modal-synopsis').innerText = synopsis;
+
+      const modal = document.getElementById('movie-detail-sheet');
+      const backdrop = document.getElementById('detail-backdrop');
+      const panel = document.getElementById('detail-panel');
+
+      modal.classList.remove('pointer-events-none');
+      backdrop.classList.remove('pointer-events-none', 'opacity-0');
+      backdrop.classList.add('opacity-100');
+      panel.classList.remove('translate-y-full');
+      panel.classList.add('translate-y-0');
+    }
+
+    function closeMovieDetail() {
+      const modal = document.getElementById('movie-detail-sheet');
+      const backdrop = document.getElementById('detail-backdrop');
+      const panel = document.getElementById('detail-panel');
+
+      backdrop.classList.remove('opacity-100');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      panel.classList.remove('translate-y-0');
+      panel.classList.add('translate-y-full');
+      setTimeout(() => {
+        modal.classList.add('pointer-events-none');
+      }, 300);
+    }
+
+    function playMovieVideo() {
+      alert('▶️ Memutar film dengan kualitas 4K Dolby Atmos...');
+      closeMovieDetail();
+    }
+
+    function toggleWatchlist(btn) {
+      const label = btn.querySelector('.watchlist-btn-text');
+      if (label.innerText === 'Daftar Saya') {
+        label.innerText = '✓ Tersimpan';
+        btn.classList.add('text-emerald-400', 'border-emerald-500/50');
+      } else {
+        label.innerText = 'Daftar Saya';
+        btn.classList.remove('text-emerald-400', 'border-emerald-500/50');
+      }
+    }
+
+    // Dynamic Clock
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const el = document.getElementById('current-time');
+      if (el) el.innerText = timeStr;
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+  </script>
+</body>
+</html>
