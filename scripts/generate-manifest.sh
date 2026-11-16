@@ -30,6 +30,10 @@ shasum -a 256 \
   .skills/mobile-frontend-craft/references/04-motion-and-haptics.md \
   .skills/mobile-frontend-craft/references/05-platform-ergonomics.md \
   .skills/mobile-frontend-craft/references/06-fullstack-frontend-stack.md \
+  .skills/mobile-frontend-craft/references/07-auth-security-offline.md \
+  .skills/mobile-frontend-craft/references/08-realtime-media-hardware.md \
+  .skills/mobile-frontend-craft/references/09-a11y-i18n-observability.md \
+  .skills/mobile-frontend-craft/references/10-domain-archetypes-and-resources.md \
   scripts/verify-integrity.sh \
   > "$CHECKSUM_FILE"
 

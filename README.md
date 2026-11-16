@@ -13,8 +13,8 @@
 <p align="center">
   <h1 align="center">⚡ MobileCraft AI</h1>
   <p align="center">
-    <strong>Universal 7-Pillar Production AI Skill & Rule Pack</strong><br>
-    <em>Basmi "AI Slop". Hasilkan kode frontend & mobile native kelas dunia, ergonomis, dan siap produksi seketika.</em>
+    <strong>Universal 12-Pillar Production AI Skill & Enterprise Rule Pack</strong><br>
+    <em>Basmi "AI Slop". Hasilkan kode frontend & mobile native kelas dunia, ergonomis, super kompleks, dan siap produksi seketika.</em>
   </p>
   <p align="center">
     <a href="https://azizulakbar89.github.io/MobileCraft-Skill-AI/"><img src="https://img.shields.io/badge/Live_Demo-Aura_Cinema-E50914?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Live Demo"></a>
@@ -237,7 +237,11 @@ MobileCraft-Skill-AI/
 │           ├── 03-component-blueprints.md # Blueprint form Zod, TanStack Query, Zustand, Chart
 │           ├── 04-motion-and-haptics.md   # Spring constants (RN Reanimated, Flutter, Motion)
 │           ├── 05-platform-ergonomics.md  # Safe Area, Dynamic Island & Keyboard avoidance
-│           └── 06-fullstack-frontend-stack.md # Panduan komprehensif arsitektur 7 pilar
+│           ├── 06-fullstack-frontend-stack.md # Panduan komprehensif arsitektur 7 pilar awal
+│           ├── 07-auth-security-offline.md # Refresh Token Mutex, Biometric Gate, RBAC, & Offline Queue
+│           ├── 08-realtime-media-hardware.md # WebSockets cache injection, FlashList, BlurHash, & Pre-Permissions
+│           ├── 09-a11y-i18n-observability.md # Dynamic Type 200%, APCA kontras, i18n, & Widget Error Boundary
+│           └── 10-domain-archetypes-and-resources.md # Pola UI 5 domain (Fintech, E-Comm, Maps, Chat, POS) + Direktori Tools
 ├── .windsurfrules                         # Aturan untuk Windsurf IDE Cascade
 ├── index.html                             # Live Interactive Cinema Streaming Mobile Web Demo
 └── README.md                              # Dokumentasi resmi repositori
