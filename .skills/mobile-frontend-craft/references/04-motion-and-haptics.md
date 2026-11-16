@@ -1,62 +1,62 @@
-# 04: Motion, Physics & Haptic Feedback
+# 04: Motion, Spring Physics & Haptic Choreography (Multi-Language)
 
-Mobile apps feel alive because of **spring physics** and **tactile feedback**, not static timing curves. This document sets the standards for motion in React Native (`react-native-reanimated`) and Flutter.
+This document provides native spring physics and haptics implementations across all major mobile platforms.
 
 ---
 
-## 1. Spring Physics vs Linear Timings
+## 1. Spring Physics Presets Lintas Bahasa
 
-Never use linear animations (`duration: 300ms`) for interactive UI transitions. Springs simulate real physical mass and momentum.
-
-### The 3 Standard Spring Presets
-
+### React Native (`react-native-reanimated`)
 ```typescript
-export const SpringPresets = {
-  // Snappy: For buttons, switches, micro-interactions, scale-down
-  snappy: {
-    damping: 15,
-    stiffness: 300,
-    mass: 0.8,
-  },
-  // Bouncy / Playful: For badges, modal entrance, toast drop-down
-  bouncy: {
-    damping: 12,
-    stiffness: 180,
-    mass: 1,
-  },
-  // Gentle / Sheet: For bottom sheets, page transition, large layout shifts
-  gentle: {
-    damping: 20,
-    stiffness: 140,
-    mass: 1.2,
-  },
+export const SpringConfig = {
+  snappy: { damping: 15, stiffness: 300, mass: 0.8 },
+  gentle: { damping: 20, stiffness: 140, mass: 1.2 },
 };
+// Usage: withSpring(0.97, SpringConfig.snappy)
+```
+
+### Flutter (Dart)
+```dart
+AnimatedScale(
+  scale: isPressed ? 0.97 : 1.0,
+  duration: const Duration(milliseconds: 120),
+  curve: Curves.easeOutBack,
+  child: widget,
+)
+```
+
+### SwiftUI (iOS Swift)
+```swift
+Button(action: performAction) {
+    Text("Tambah ke Tas")
+}
+.buttonStyle(ScaleButtonStyle())
+
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
+    }
+}
+```
+
+### Jetpack Compose (Android Kotlin)
+```kotlin
+val scale by animateFloatAsState(
+    targetValue = if (isPressed) 0.97f else 1f,
+    animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessMedium)
+)
+Box(modifier = Modifier.graphicsLayer { scaleX = scale; scaleY = scale })
 ```
 
 ---
 
-## 2. Haptic Feedback Choreography (`expo-haptics`)
+## 2. Haptic Feedback Calls Lintas Bahasa
 
-Haptics must be used intentionally. Overusing haptics creates fatigue; omitting them makes the interface feel like plastic.
-
-| Event | Haptic Call | Purpose |
-| :--- | :--- | :--- |
-| **Primary Button Tap** | `Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)` | Confirms tap registration |
-| **Tab Bar Selection** | `Haptics.selectionAsync()` | Subtle tactile notch feel |
-| **Toggle Switch Flick** | `Haptics.selectionAsync()` | Physical toggle sensation |
-| **Pull-to-Refresh Triggered** | `Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)` | Signifies threshold crossed |
-| **Payment / Destructive Confirmation** | `Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)` | High-trust emotional feedback |
-| **Form Validation Error** | `Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)` | Physical alert of blocking error |
-
----
-
-## 3. Micro-Interaction Rules
-
-1. **Touch-Down Latency (< 50ms):**
-   - The UI must react visually the exact millisecond the user's finger touches the screen (`onPressIn`). Never wait for `onPress` (release) before showing feedback.
-2. **Press Scale Target:**
-   - Standard buttons: `scale: 0.97`
-   - Compact chips/icons: `scale: 0.94`
-   - Cards/Bento tiles: `scale: 0.985`
-3. **Skeleton Pulse Synchronization:**
-   - When multiple skeleton placeholders are on screen, share a single animated opacity clock or pulse so the shimmer pulses synchronously across all items.
+| Event | React Native (`expo-haptics`) | Flutter (`services`) | SwiftUI (`sensoryFeedback`) | Android Compose (`HapticFeedback`) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Tap Button** | `impactAsync(Light)` | `HapticFeedback.lightImpact()` | `.sensoryFeedback(.impact(weight: .light))` | `performHapticFeedback(TextHandleMove)` |
+| **Tab Switch** | `selectionAsync()` | `HapticFeedback.selectionClick()` | `.sensoryFeedback(.selection)` | `performHapticFeedback(GestureThresholdActivate)` |
+| **Success/Pay**| `notificationAsync(Success)`| `HapticFeedback.mediumImpact()` | `.sensoryFeedback(.success)` | `performHapticFeedback(Confirm)` |
+| **Error** | `notificationAsync(Error)` | `HapticFeedback.heavyImpact()` | `.sensoryFeedback(.error)` | `performHapticFeedback(Reject)` |

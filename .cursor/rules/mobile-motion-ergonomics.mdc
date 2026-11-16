@@ -1,27 +1,29 @@
 ---
-description: Enforce mobile thumb-zone ergonomics, safe area insets, tactile spring physics, and list performance.
-globs: ["**/*.tsx", "**/*.jsx", "**/*.dart", "**/screens/**", "**/navigation/**"]
+description: Enforce mobile thumb-zone ergonomics, safe area insets, tactile spring physics, and list performance across all mobile languages.
+globs: ["**/*.tsx", "**/*.jsx", "**/*.dart", "**/*.swift", "**/*.kt", "**/*.vue", "**/*.svelte", "**/screens/**", "**/navigation/**"]
 alwaysApply: true
 ---
 
-# MobileCraft Ergonomics & Motion Rule
-
-When building mobile screens and interactive components:
+# MobileCraft Multi-Language Ergonomics & Motion Rule
 
 1. **Thumb-Zone Anchor:**
-   - Keep primary buttons, form submission triggers, and quick actions within the bottom 35% of the screen.
-   - Interactive touch targets MUST be at least `44x44pt` (iOS) or `48x48dp` (Android). Always supply `hitSlop` when visual icons are smaller.
+   - Keep primary buttons, submission triggers, and quick actions within the bottom 35% of the screen.
+   - Interactive touch targets MUST be at least $44\times44\text{pt}$ (iOS) or $48\times48\text{dp}$ (Android).
 
 2. **Spring Physics & Haptic Micro-Interactions:**
-   - Interactive buttons and cards MUST react on `onPressIn` using spring physics (`damping: 15, stiffness: 300`, scale to `0.97`).
-   - Trigger `expo-haptics` (`Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)` or `Haptics.selectionAsync()`) on button presses, tab switches, and toggles.
-   - Never use slow linear transitions (`duration: 300ms`) for interactive touch feedback.
+   - Interactive elements MUST scale down on press (`0.97`) using spring physics and trigger native haptic feedback.
+   - React Native: `withSpring` + `expo-haptics`.
+   - Flutter: `AnimatedScale` + `HapticFeedback.lightImpact()`.
+   - SwiftUI: `.spring()` + `.sensoryFeedback()`.
+   - Jetpack Compose: `spring()` + `LocalHapticFeedback.current`.
 
 3. **Safe Area & Hardware Boundaries:**
-   - Always derive status bar and bottom indicator paddings from `useSafeAreaInsets()`.
+   - Derive insets dynamically (`useSafeAreaInsets` in RN, `SafeArea` in Flutter, `safeAreaInsets` in Swift, `WindowInsets` in Compose).
    - NEVER hardcode numeric values like `paddingTop: 44` or `paddingBottom: 34`.
-   - Wrap interactive forms in `KeyboardAvoidingView` to prevent inputs from being covered by the software keyboard.
 
 4. **Performance & List Architecture:**
-   - Use `@shopify/flash-list` or `FlatList` with `estimatedItemSize` for dynamic collections.
-   - NEVER use array `.map()` inside a plain `ScrollView` for datasets larger than 5 items.
+   - React Native: `@shopify/flash-list`.
+   - Flutter: `ListView.builder` or `CustomScrollView`.
+   - SwiftUI: `LazyVStack` inside `ScrollView`.
+   - Jetpack Compose: `LazyColumn`.
+   - NEVER map large datasets in plain un-virtualized scroll containers.
