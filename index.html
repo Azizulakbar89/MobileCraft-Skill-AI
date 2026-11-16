@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Aura Mobile</title>
+  <title>MobileCraft: Zero-Slop Native Experience</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
@@ -12,6 +12,7 @@
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      box-sizing: border-box;
     }
     
     .font-mono {
@@ -22,7 +23,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Tactile Press Physics */
+    /* Tactile Press Micro-Interactions */
     .tactile {
       transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.1s ease;
     }
@@ -39,37 +40,58 @@
       scrollbar-width: none;
     }
 
-    /* Bottom Sheet Animation */
+    /* Modal Sheet Physics */
     .sheet-backdrop {
-      transition: opacity 0.25s ease;
+      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .sheet-content {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    /* Device Mockup Shadow for Desktop */
+    @media (min-width: 640px) {
+      .phone-frame {
+        box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 10px #1e2024, 0 0 0 12px #2d3139;
+        height: 844px;
+        width: 390px;
+        border-radius: 50px;
+      }
+    }
   </style>
 </head>
-<body class="bg-slate-900 sm:bg-slate-950 min-h-screen flex items-center justify-center m-0 p-0 sm:p-4 text-slate-900">
+<body class="bg-slate-950 min-h-screen flex flex-col items-center justify-center p-0 sm:py-8 sm:px-4 text-slate-900 overflow-x-hidden">
 
-  <!-- Mobile Device Shell -->
-  <div class="w-full max-w-[412px] h-[100dvh] sm:h-[844px] bg-[#F8F9FA] sm:rounded-[44px] sm:shadow-2xl sm:border-[10px] sm:border-slate-800 flex flex-col relative overflow-hidden">
+  <!-- Desktop Presentation Header (Hidden on Real Mobile) -->
+  <div class="hidden sm:flex flex-col items-center mb-6 text-center select-none">
+    <div class="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-xs font-semibold">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      MobileCraft Interactive Showcase
+    </div>
+    <h1 class="text-white text-xl font-bold mt-2">Zero-Slop Mobile Architecture</h1>
+    <p class="text-slate-400 text-xs mt-1">Interaksi native, radius konsentris, & thumb-zone ergonomics</p>
+  </div>
+
+  <!-- Primary Mobile Device Container -->
+  <div class="phone-frame w-full h-[100dvh] bg-[#F8F9FA] flex flex-col relative overflow-hidden shrink-0">
     
-    <!-- Status Bar (iOS / Android Native Look) -->
-    <header class="pt-3 px-6 pb-2 flex justify-between items-center text-xs font-semibold text-slate-800 bg-[#F8F9FA] z-30 shrink-0">
+    <!-- Status Bar (Native iOS Geometry) -->
+    <header class="pt-3 px-7 pb-1 flex justify-between items-center text-xs font-bold text-slate-900 bg-[#F8F9FA] z-30 shrink-0 select-none">
       <span id="current-time">09:41</span>
-      <div class="w-24 h-5 bg-black rounded-full flex items-center justify-center">
-        <div class="w-2.5 h-2.5 rounded-full bg-slate-900 mr-2"></div>
-        <div class="w-2 h-2 rounded-full bg-emerald-500/80 animate-pulse"></div>
+      <!-- Dynamic Island Capsule -->
+      <div class="w-28 h-6 bg-black rounded-full flex items-center justify-between px-2.5">
+        <div class="w-2.5 h-2.5 rounded-full bg-slate-900"></div>
+        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
       </div>
       <div class="flex items-center gap-1.5 text-[11px]">
         <span>5G</span>
         <div class="w-5 h-2.5 border border-slate-700 rounded-sm p-0.5 flex items-center">
-          <div class="w-full h-full bg-slate-800 rounded-2xs"></div>
+          <div class="w-full h-full bg-slate-900 rounded-2xs"></div>
         </div>
       </div>
     </header>
 
     <!-- Scrollable Screen Content Container -->
-    <main class="flex-1 overflow-y-auto hide-scrollbar relative pb-24" id="app-viewport">
+    <main class="flex-1 overflow-y-auto hide-scrollbar relative pb-28" id="app-viewport">
       
       <!-- SCREEN 1: FINTECH WALLET -->
       <section id="view-wallet" class="p-5 space-y-4">
@@ -81,7 +103,7 @@
             </div>
             <div>
               <div class="text-[11px] text-slate-500 font-medium">Selamat datang,</div>
-              <div class="text-sm font-bold text-slate-950">Azizul Hakim</div>
+              <div class="text-sm font-bold text-slate-950">Azizul Akbar</div>
             </div>
           </div>
           <button onclick="toggleBalanceVisibility()" class="tactile w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-xs text-slate-700">
@@ -89,18 +111,18 @@
           </button>
         </div>
 
-        <!-- Main Balance Card -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs">
+        <!-- Main Balance Card (Concentric: Outer 28px, Padding 20px) -->
+        <div class="bg-white rounded-[28px] p-5 border border-slate-200/80 shadow-xs">
           <div class="flex items-center justify-between text-xs text-slate-500">
             <span>Saldo Aktif Tabungan</span>
-            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold text-[11px]">+14.8% bln ini</span>
+            <span class="text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full font-bold text-[10px]">+14.8% bln ini</span>
           </div>
           <div class="text-3xl font-extrabold text-slate-950 mt-2 tracking-tight tabular-nums" id="balance-display">
             Rp 148.520.000
           </div>
           <div class="text-xs text-slate-400 mt-1 font-mono">BCA Prioritas • 9920 4421</div>
 
-          <!-- Quick Action Buttons -->
+          <!-- Quick Action Buttons (Thumb Area) -->
           <div class="grid grid-cols-4 gap-2 mt-5 pt-4 border-t border-slate-100">
             <button onclick="openActionModal('Kirim Saldo', 'Transfer instan ke 140+ bank dan e-wallet')" class="tactile flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-slate-50">
               <div class="w-11 h-11 rounded-2xl bg-slate-950 text-white flex items-center justify-center shadow-xs">
@@ -130,36 +152,33 @@
         </div>
 
         <!-- Bento Spending Chart -->
-        <div class="bg-white rounded-3xl p-4 border border-slate-200/80 shadow-xs">
+        <div class="bg-white rounded-[24px] p-4 border border-slate-200/80 shadow-xs">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold text-slate-900">Pengeluaran Bulan Ini</span>
+            <span class="text-xs font-bold text-slate-900">Aliran Pengeluaran</span>
             <span class="text-[11px] text-slate-500 font-medium">Batas: Rp 20jt</span>
           </div>
           <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
-            <div class="bg-slate-900 h-full w-[52%]"></div>
+            <div class="bg-slate-950 h-full w-[52%]"></div>
             <div class="bg-sky-700 h-full w-[28%]"></div>
             <div class="bg-amber-600 h-full w-[12%]"></div>
           </div>
           <div class="flex justify-between items-center text-[10px] text-slate-600 mt-2.5 font-medium">
-            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-900 inline-block"></span> Belanja (52%)</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-950 inline-block"></span> Belanja (52%)</span>
             <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-700 inline-block"></span> Tagihan (28%)</span>
             <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-600 inline-block"></span> Investasi (12%)</span>
           </div>
         </div>
 
-        <!-- Grouped Recent Transactions -->
+        <!-- Grouped Recent Transactions (Anti-Card-Spam) -->
         <div>
           <div class="flex items-center justify-between mb-2 px-1">
-            <span class="text-xs font-bold text-slate-900">Transaksi Terakhir</span>
+            <span class="text-xs font-bold text-slate-900">Mutasi Terakhir</span>
             <span class="text-[11px] text-slate-400">November 2026</span>
           </div>
-          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-            <!-- Row 1 -->
+          <div class="bg-white rounded-[24px] border border-slate-200/80 shadow-xs overflow-hidden">
             <div class="p-3.5 flex items-center justify-between border-b border-slate-100">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold text-xs">
-                  ⚡
-                </div>
+                <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold text-xs">⚡</div>
                 <div>
                   <div class="text-xs font-bold text-slate-900">Tagihan Listrik PLN</div>
                   <div class="text-[10px] text-slate-400">Hari ini, 08:30 • Utilitas</div>
@@ -170,12 +189,9 @@
                 <div class="text-[10px] text-emerald-800 font-semibold">Berhasil</div>
               </div>
             </div>
-            <!-- Row 2 -->
             <div class="p-3.5 flex items-center justify-between border-b border-slate-100">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-sky-50 text-sky-800 flex items-center justify-center font-bold text-xs">
-                  💼
-                </div>
+                <div class="w-10 h-10 rounded-2xl bg-sky-50 text-sky-800 flex items-center justify-center font-bold text-xs">💼</div>
                 <div>
                   <div class="text-xs font-bold text-slate-900">Transfer Masuk (PT Inovasi)</div>
                   <div class="text-[10px] text-slate-400">Kemarin, 14:15 • Honor Project</div>
@@ -186,12 +202,9 @@
                 <div class="text-[10px] text-slate-400">Selesai</div>
               </div>
             </div>
-            <!-- Row 3 -->
             <div class="p-3.5 flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-bold text-xs">
-                  ☕
-                </div>
+                <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-800 flex items-center justify-center font-bold text-xs">☕</div>
                 <div>
                   <div class="text-xs font-bold text-slate-900">Kopi Kenangan Senopati</div>
                   <div class="text-[10px] text-slate-400">14 Nov, 16:40 • F&B</div>
@@ -206,7 +219,7 @@
         </div>
       </section>
 
-      <!-- SCREEN 2: HABIT / WELLNESS TRACKER -->
+      <!-- SCREEN 2: HABIT TRACKER -->
       <section id="view-habits" class="p-5 space-y-4 hidden">
         <div>
           <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Senin, 16 November</div>
@@ -215,7 +228,7 @@
 
         <!-- Bento Ring Card -->
         <div class="grid grid-cols-2 gap-3">
-          <div class="bg-white rounded-3xl p-4 border border-slate-100 shadow-xs flex flex-col items-center justify-center text-center">
+          <div class="bg-white rounded-[24px] p-4 border border-slate-100 shadow-xs flex flex-col items-center justify-center text-center">
             <div class="relative w-24 h-24 flex items-center justify-center">
               <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                 <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
@@ -230,14 +243,14 @@
           </div>
 
           <div class="flex flex-col gap-3">
-            <div class="bg-amber-50/80 border border-amber-200/60 rounded-3xl p-3.5 flex items-center gap-3">
+            <div class="bg-amber-50/80 border border-amber-200/60 rounded-[20px] p-3.5 flex items-center gap-3">
               <div class="text-2xl">🔥</div>
               <div>
                 <div class="text-[10px] font-medium text-amber-800">Streak Terbaik</div>
                 <div class="text-sm font-bold text-slate-900 tabular-nums">14 Hari</div>
               </div>
             </div>
-            <div class="bg-sky-50/80 border border-sky-200/60 rounded-3xl p-3.5 flex items-center gap-3">
+            <div class="bg-sky-50/80 border border-sky-200/60 rounded-[20px] p-3.5 flex items-center gap-3">
               <div class="text-2xl">💧</div>
               <div>
                 <div class="text-[10px] font-medium text-sky-800">Air Minum</div>
@@ -297,28 +310,30 @@
         </div>
       </section>
 
-      <!-- SCREEN 3: E-COMMERCE PRODUCT DETAIL -->
-      <section id="view-shop" class="space-y-4 hidden pb-16">
+      <!-- SCREEN 3: E-COMMERCE PRODUCT DETAIL (Fixed Layout & Non-Clashing Sticky Bar) -->
+      <section id="view-shop" class="space-y-4 hidden pb-6">
         <!-- Top App Bar -->
-        <div class="p-4 flex items-center justify-between">
-          <button class="tactile w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-xs">
+        <div class="p-4 flex items-center justify-between border-b border-slate-100 bg-white">
+          <button class="tactile w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center">
             <svg class="w-4 h-4 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
           </button>
           <div class="text-xs font-bold text-slate-900">Detail Produk</div>
-          <button onclick="toggleFavorite(this)" class="tactile w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-xs text-slate-700">
+          <button onclick="toggleFavorite(this)" class="tactile w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-700">
             <svg class="w-4 h-4 heart-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
           </button>
         </div>
 
-        <!-- Edge-to-Edge Image Carousel -->
-        <div class="px-4">
-          <div id="product-card-preview" class="w-full h-56 bg-slate-100 rounded-3xl overflow-hidden relative flex items-center justify-center border border-slate-200 transition-colors duration-300">
-            <span id="product-emoji" class="text-7xl select-none">🎧</span>
-            <span class="absolute bottom-3 right-3 px-2 py-0.5 bg-black/60 text-white text-[10px] rounded-full font-mono">1/3</span>
+        <!-- Product Visual Showcase (Concentric Outer 28px) -->
+        <div class="px-5">
+          <div id="product-card-preview" class="w-full h-60 bg-gradient-to-b from-slate-100 to-slate-200/80 rounded-[28px] overflow-hidden relative flex flex-col items-center justify-center border border-slate-200/80 shadow-xs">
+            <div id="product-badge" class="w-32 h-32 rounded-full bg-white/70 backdrop-blur-xs flex items-center justify-center shadow-inner text-6xl">
+              🎧
+            </div>
+            <span class="absolute bottom-3 right-3 px-2.5 py-0.5 bg-black/60 text-white text-[10px] rounded-full font-mono">1/3</span>
           </div>
         </div>
 
-        <!-- Product Details -->
+        <!-- Product Specs -->
         <div class="px-5 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Acoustic Pro Studio</span>
@@ -326,38 +341,38 @@
               <span class="text-amber-500">★</span> 4.9 <span class="text-slate-400 font-normal">(184 ulasan)</span>
             </div>
           </div>
-          <h2 class="text-lg font-bold text-slate-900">Spatial Studio ANC Headphones Gen-3</h2>
+          <h2 class="text-lg font-bold text-slate-900 leading-snug">Spatial Studio ANC Headphones Gen-3</h2>
           <p class="text-xs text-slate-500 leading-relaxed">
             Headphone nirkabel kelas studio dengan peredam bising aktif hibrida, baterai 48 jam, dan earcup memory foam bernapas.
           </p>
 
-          <!-- Color Variant Selector -->
+          <!-- Color Selector -->
           <div class="pt-2">
             <div class="text-[11px] font-bold text-slate-800 mb-2">Pilihan Warna: <span id="color-label" class="text-slate-500 font-normal">Matte Obsidian</span></div>
             <div class="flex gap-2">
-              <button onclick="selectColor('Matte Obsidian', '#1E293B', '🎧')" class="color-btn tactile px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-950 text-white shadow-xs">
+              <button onclick="selectColor('Matte Obsidian', '🎧', '#0F172A')" class="color-btn tactile px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-950 text-white shadow-xs">
                 Obsidian
               </button>
-              <button onclick="selectColor('Silver Fog', '#E2E8F0', '🎙️')" class="color-btn tactile px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">
+              <button onclick="selectColor('Silver Fog', '🎙️', '#64748B')" class="color-btn tactile px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">
                 Silver Fog
               </button>
-              <button onclick="selectColor('Forest Sage', '#D1FAE5', '📻')" class="color-btn tactile px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">
+              <button onclick="selectColor('Forest Sage', '📻', '#059669')" class="color-btn tactile px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">
                 Forest Sage
               </button>
             </div>
           </div>
-        </div>
 
-        <!-- Sticky Bottom Add to Cart Bar -->
-        <div class="fixed bottom-16 sm:bottom-0 left-0 right-0 max-w-[412px] mx-auto p-4 bg-white/95 backdrop-blur-md border-t border-slate-200/80 flex items-center justify-between gap-4 z-20">
-          <div>
-            <div class="text-[10px] text-slate-400 font-medium">Harga Khusus</div>
-            <div class="text-lg font-extrabold text-slate-950 tabular-nums">Rp 3.499.000</div>
+          <!-- Docked Checkout Card (Tucked neatly inside scroll content, NEVER clashing with bottom nav) -->
+          <div class="mt-4 p-4 bg-white rounded-[24px] border border-slate-200/80 shadow-xs flex items-center justify-between gap-4">
+            <div>
+              <div class="text-[10px] text-slate-400 font-medium">Harga Khusus</div>
+              <div class="text-base font-extrabold text-slate-950 tabular-nums">Rp 3.499.000</div>
+            </div>
+            <button onclick="addToCartAnimation()" class="tactile flex-1 h-11 bg-slate-950 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-xs">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+              <span id="cart-btn-text">Tambah ke Tas</span>
+            </button>
           </div>
-          <button onclick="addToCartAnimation()" class="tactile flex-1 h-12 bg-slate-950 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-            <span id="cart-btn-text">Tambah ke Tas</span>
-          </button>
         </div>
       </section>
 
@@ -389,15 +404,15 @@
             Tepi Tebing
           </button>
           <button class="tactile px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-[11px] font-medium whitespace-nowrap">
-            Pemandangan Hutan
+            Hutan Tropis
           </button>
         </div>
 
         <!-- Accommodation Cards -->
-        <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-xs">
-          <div class="h-40 bg-slate-200 relative flex items-center justify-center">
+        <div class="bg-white rounded-[24px] overflow-hidden border border-slate-200 shadow-xs">
+          <div class="h-40 bg-gradient-to-tr from-emerald-100 to-sky-100 relative flex items-center justify-center">
             <span class="text-5xl">🌴</span>
-            <span class="absolute top-3 right-3 px-2 py-0.5 bg-white/90 rounded-full text-[10px] font-bold text-slate-900 backdrop-blur-xs">
+            <span class="absolute top-3 right-3 px-2 py-0.5 bg-white/95 rounded-full text-[10px] font-bold text-slate-900 shadow-xs">
               ★ 4.96
             </span>
           </div>
@@ -418,10 +433,10 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-xs">
-          <div class="h-40 bg-slate-200 relative flex items-center justify-center">
+        <div class="bg-white rounded-[24px] overflow-hidden border border-slate-200 shadow-xs">
+          <div class="h-40 bg-gradient-to-tr from-sky-100 to-blue-200 relative flex items-center justify-center">
             <span class="text-5xl">🌊</span>
-            <span class="absolute top-3 right-3 px-2 py-0.5 bg-white/90 rounded-full text-[10px] font-bold text-slate-900 backdrop-blur-xs">
+            <span class="absolute top-3 right-3 px-2 py-0.5 bg-white/95 rounded-full text-[10px] font-bold text-slate-900 shadow-xs">
               ★ 4.89
             </span>
           </div>
@@ -481,26 +496,30 @@
 
     </main>
 
-    <!-- Bottom Sheet Modal (Interactive Drawer) -->
-    <div id="action-modal" class="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end">
-      <div id="modal-backdrop" onclick="closeActionModal()" class="sheet-backdrop absolute inset-0 bg-black/40 opacity-0 pointer-events-none"></div>
-      <div id="modal-panel" class="sheet-content relative bg-white rounded-t-[32px] p-6 shadow-2xl translate-y-full pointer-events-auto">
+    <!-- Bottom Sheet Modal (CONSTRAINED INSIDE PHONE FRAME ONLY: absolute inset-0) -->
+    <div id="action-modal" class="absolute inset-0 z-50 pointer-events-none flex flex-col justify-end overflow-hidden">
+      <!-- Dimmed Backdrop -->
+      <div id="modal-backdrop" onclick="closeActionModal()" class="sheet-backdrop absolute inset-0 bg-black/50 opacity-0 pointer-events-none"></div>
+      
+      <!-- Slide-Up Drawer Panel -->
+      <div id="modal-panel" class="sheet-content relative bg-white rounded-t-[32px] p-6 shadow-2xl translate-y-full pointer-events-auto border-t border-slate-100">
         <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-4"></div>
-        <h3 id="modal-title" class="text-base font-bold text-slate-900 text-center">Aksi Cepat</h3>
-        <p id="modal-desc" class="text-xs text-slate-500 text-center mt-1">Keterangan fitur</p>
+        <h3 id="modal-title" class="text-base font-bold text-slate-900 text-center">Atur Pencarian</h3>
+        <p id="modal-desc" class="text-xs text-slate-500 text-center mt-1">Pilih destinasi, tanggal menginap, dan jumlah kamar</p>
+        
         <div class="mt-6 space-y-3">
-          <button onclick="closeActionModal()" class="tactile w-full h-12 bg-slate-950 text-white rounded-2xl font-bold text-xs flex items-center justify-center">
+          <button onclick="closeActionModal()" class="tactile w-full h-12 bg-slate-950 text-white rounded-2xl font-bold text-xs flex items-center justify-center shadow-xs">
             Lanjutkan Aksi
           </button>
           <button onclick="closeActionModal()" class="tactile w-full h-12 bg-slate-100 text-slate-700 rounded-2xl font-semibold text-xs flex items-center justify-center">
-            Batal
+            Tutup
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Native Mobile Bottom Tab Bar -->
-    <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-2 flex items-center justify-around z-30 select-none">
+    <!-- Native Bottom Tab Bar (Pinned strictly to bottom of Phone Frame) -->
+    <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-2 flex items-center justify-around z-40 select-none">
       <button onclick="navigateTab('wallet')" class="nav-btn tactile flex flex-col items-center gap-1 text-slate-950" data-tab="wallet">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
         <span class="text-[10px] font-bold">Dompet</span>
@@ -528,14 +547,14 @@
       </button>
     </nav>
 
-    <!-- Bottom Indicator Line -->
-    <div class="absolute bottom-1 left-0 right-0 flex justify-center pointer-events-none select-none z-40">
+    <!-- Bottom Indicator Line (iPhone Home Bar) -->
+    <div class="absolute bottom-1 left-0 right-0 flex justify-center pointer-events-none select-none z-50">
       <div class="w-32 h-1 bg-slate-300 rounded-full"></div>
     </div>
   </div>
 
   <script>
-    // Tab Navigation
+    // Tab Switching
     function navigateTab(tabKey) {
       const views = ['wallet', 'habits', 'shop', 'travel', 'assistant'];
       views.forEach(v => {
@@ -546,7 +565,7 @@
       const targetView = document.getElementById('view-' + tabKey);
       if (targetView) targetView.classList.remove('hidden');
 
-      // Update Nav Buttons
+      // Update Tab Styles
       document.querySelectorAll('.nav-btn').forEach(btn => {
         if (btn.getAttribute('data-tab') === tabKey) {
           btn.className = 'nav-btn tactile flex flex-col items-center gap-1 text-slate-950 font-bold';
@@ -559,7 +578,7 @@
       document.getElementById('app-viewport').scrollTop = 0;
     }
 
-    // Balance visibility toggle
+    // Toggle Balance
     let isBalanceHidden = false;
     function toggleBalanceVisibility() {
       const display = document.getElementById('balance-display');
@@ -571,7 +590,7 @@
       }
     }
 
-    // Modal Sheet Trigger
+    // Constrained Bottom Sheet Modal
     function openActionModal(title, desc) {
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-desc').innerText = desc;
@@ -600,7 +619,7 @@
       }, 300);
     }
 
-    // Habit toggle & live progress
+    // Habit toggle & live progress computation
     function toggleHabit(btn) {
       const item = btn.closest('.habit-item');
       const title = item.querySelector('.habit-title');
@@ -616,7 +635,6 @@
         title.classList.add('line-through', 'opacity-60');
       }
 
-      // Recompute progress
       const all = document.querySelectorAll('.habit-item');
       const checked = document.querySelectorAll('.habit-item[data-checked="true"]');
       const pct = Math.round((checked.length / all.length) * 100);
@@ -627,25 +645,24 @@
     }
 
     // Color variant selector
-    function selectColor(name, bg, emoji) {
+    function selectColor(name, emoji, themeColor) {
       document.getElementById('color-label').innerText = name;
-      document.getElementById('product-card-preview').style.backgroundColor = bg;
-      document.getElementById('product-emoji').innerText = emoji;
+      document.getElementById('product-badge').innerText = emoji;
 
       document.querySelectorAll('.color-btn').forEach(btn => {
         if (btn.innerText.includes(name.split(' ')[0])) {
-          btn.className = 'color-btn tactile px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-950 text-white shadow-xs';
+          btn.className = 'color-btn tactile px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-950 text-white shadow-xs';
         } else {
-          btn.className = 'color-btn tactile px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200';
+          btn.className = 'color-btn tactile px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200';
         }
       });
     }
 
-    // Add to cart animation
+    // Add to cart feedback
     function addToCartAnimation() {
       const btnText = document.getElementById('cart-btn-text');
       const badge = document.getElementById('cart-badge');
-      btnText.innerText = '✓ Berhasil Ditambahkan!';
+      btnText.innerText = '✓ Ditambahkan!';
       badge.classList.remove('hidden');
 
       setTimeout(() => {
@@ -687,7 +704,7 @@
       setTimeout(() => {
         const aiBubble = document.createElement('div');
         aiBubble.className = 'flex items-start gap-2.5 max-w-[90%]';
-        aiBubble.innerHTML = `<div class="bg-white p-3.5 rounded-3xl rounded-tl-sm border border-slate-200/80 shadow-2xs text-xs text-slate-800 leading-relaxed">Saya mencatat pesan Anda: <em>"${text}"</em>. Sistem telah menyinkronkan data dengan dompet dan checklist harian Anda.</div>`;
+        aiBubble.innerHTML = `<div class="bg-white p-3.5 rounded-3xl rounded-tl-sm border border-slate-200/80 shadow-2xs text-xs text-slate-800 leading-relaxed">Saya mencatat instruksi Anda: <em>"${text}"</em>. Sistem dompet dan habit harian telah diperbarui secara otomatis.</div>`;
         container.appendChild(aiBubble);
         container.scrollTop = container.scrollHeight;
       }, 400);
@@ -705,7 +722,7 @@
       `;
     }
 
-    // Clock
+    // System Clock
     function updateClock() {
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
